@@ -30,8 +30,8 @@ def solve(funcs, a, b, rel_approx_tol=1.e-15, abs_approx_tol=1.e-12,
           max_cond_num=1e5, good_zeros_factor=100, min_good_zeros_tol=1e-5,
           check_eval_error=True, check_eval_freq=1, plot=False,
           plot_intervals=False, deg=None, target_deg=2,
-          return_potentials=False, method='svd', target_tol=1.01*macheps,
-          trust_small_evals=False, intervalReductions=["improveBound", "getBoundingParallelogram"]):
+          return_potentials=False, method='svd', target_tol=1.01*macheps, 
+          intervalReductions=["improveBound", "getBoundingParallelogram"]):
     """
     Finds the real roots of the given list of functions on a given interval.
 
@@ -95,10 +95,6 @@ def solve(funcs, a, b, rel_approx_tol=1.e-15, abs_approx_tol=1.e-12,
     target_tol : float
         The final absolute approximation tolerance to use before using any sort
         of solver (Macaulay, linear, etc).
-    trust_small_evals : bool
-        Whether or not to trust function evaluations that may give floats
-        smaller than machine epsilon. This should only be set to True if the
-        function evaluations are very accurate.
     intervalReductions : list
         A list specifying the types of interval reductions that should be performed
         on each subinterval. The order of methods in the list determines the order
@@ -135,10 +131,6 @@ def solve(funcs, a, b, rel_approx_tol=1.e-15, abs_approx_tol=1.e-12,
             deg = deg_dim[dim]
 
     # Sets up the tolerances.
-    if isinstance(abs_approx_tol, list):
-        abs_approx_tol = [max(tol, 1.01*macheps) for tol in abs_approx_tol]
-    else:
-        abs_approx_tol = max(abs_approx_tol, 1.01*macheps)
     tols = Tolerances(rel_approx_tol=rel_approx_tol,
                       abs_approx_tol=abs_approx_tol,
                       max_cond_num=max_cond_num,
@@ -172,8 +164,7 @@ def solve(funcs, a, b, rel_approx_tol=1.e-15, abs_approx_tol=1.e-12,
 
     # Initial Solve
     solve_func(funcs, a, b, deg, target_deg, interval_data,
-               root_tracker, tols, max_level, method=method,
-               trust_small_evals=trust_small_evals)
+               root_tracker, tols, max_level, method=method)
     root_tracker.keep_possible_duplicates()
 
     # Polishing
@@ -573,7 +564,7 @@ def good_zeros_nd(zeros, imag_tol, real_tol):
         mask *= np.all(np.abs(zeros.real) <= 1 + real_tol, axis = 1)
     return zeros[mask].real
 
-def get_abs_approx_tol(func, deg, a, b, dim):
+def get_abs_approx_tol(func, a, b):
     """ Gets an absolute approximation tolerance based on the assumption that
         on the interval of size linearization_size * 2, the function can be
         perfectly approximated by a low degree Chebyshev polynomial.
@@ -582,8 +573,6 @@ def get_abs_approx_tol(func, deg, a, b, dim):
         ----------
             func : function
                 Function to approximate.
-            deg : int
-                The degree to use to approximate the function on the interval.
             a : numpy array
                 The lower bounds of the interval on which to approximate.
             b : numpy array
@@ -595,15 +584,21 @@ def get_abs_approx_tol(func, deg, a, b, dim):
                 The calculated absolute approximation tolerance based on the
                 noise of the function on the small interval.
     """
-    # Half the width of the smaller interval
+    dim = len(a)
+    deg = 2 #Assume quadratic is perfect at this size
+        
+    # Take an interval around the midpoint of a and b
+    rand_point = 0.02468254769034567308
+    x = transform(rand_point, a, b)
+    for i in range(dim): #Make sure x is not 0, if it is shift it towards a so it's still in the interval.
+        if x[i] == 0:
+            x[i] = (x[i] + a[i])/2
+    
+    #Take a small interval around x. This interval is about as small as you can get while still having
+    #numbers with different floating point representations.
     linearization_size = 1e-14
-
-
-    # Get a random small interval from [-1, 1] and transform so it's
-    # within [a, b]
-    x = transform(random_point(dim), a, b)
-    a2 = np.array(x - linearization_size)
-    b2 = np.array(x + linearization_size)
+    a2 = x * (1 - linearization_size)
+    b2 = x * (1 + linearization_size)
 
     # Approximate with a low degree Chebyshev polynomial
     coeff = interval_approximate_nd(func, a2, b2, 2*deg)
@@ -612,12 +607,8 @@ def get_abs_approx_tol(func, deg, a, b, dim):
     # Sum up coeffieicents that are assumed to be just noise
     abs_approx_tol = np.sum(np.abs(coeff))
 
-    # Divide by the number of spots that were summed up.
-    numSpots = (deg*2)**dim - (deg)**dim
-
     # Multiply by 10 to give a looser tolerance (speed-up)
-    # print(abs_approx_tol*10 / numSpots)
-    return abs_approx_tol*10 / numSpots
+    return abs_approx_tol*10
 
 @memoize
 def deg_slices(deg, dim):
@@ -640,29 +631,9 @@ def deg_slices(deg, dim):
     """
     return (slice(0, deg), )*dim
 
-@memoize
-def random_point(dim):
-    """Gets a random point from [-1, 1]^dim that's used for get_abs_approx_tol.
-    Since this is memoized, subsequent calls will be a lot faster.
-
-    Parameters
-    ----------
-        dim : int
-            The dimension of the system/how many samples to take from [0, 1].
-
-    Returns
-    -------
-        numpy array
-            The random point that haas dim entries.
-    """
-    np.random.seed(0)
-    # Scale the points so that they're each within [-1, 1]
-    return np.random.rand(dim)*2 - 1
-
 def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
                          root_tracker, tols, max_level,good_degs=None, level=0,
-                         method='svd', use_target_tol=False,
-                         trust_small_evals=False):
+                         method='svd'):
     """Finds the common zeros of the given functions.
 
     All the zeros will be stored in root_tracker.
@@ -696,10 +667,6 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
     method : str (optional)
         The method to use when reducing the Macaulay matrix. Valid options are
         svd, tvb, and qrt.
-    use_target_tol : bool
-        Whether or not to use tols.target_tol when making approximations. This
-        is necessary to get a sufficiently accurate approximation from which to
-        build the Macaulay matrix and run the solver.
     """
 
     if level >= max_level:
@@ -711,22 +678,15 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
 
     dim = len(a)
 
-    if tols.check_eval_error:
-        # Using the first abs_approx_tol
-        if not use_target_tol:
-            tols.abs_approx_tol = tols.abs_approx_tols[tols.currTol]
-            if level%tols.check_eval_freq == 0:
-                numSpots = (deg*2)**len(a) - (deg)**len(a)
-                for func in funcs:
-                    tols.abs_approx_tol = max(tols.abs_approx_tol, numSpots * get_abs_approx_tol(func, 3, a, b, dim))
-        # Using target_tol
-        else:
-            tols.target_tol = tols.target_tols[tols.currTol]
-            if level%tols.check_eval_freq == 0:
-                numSpots = (deg*2)**len(a) - (deg)**len(a)
-                for func in funcs:
-                    tols.target_tol = max(tols.target_tol, numSpots * get_abs_approx_tol(func, 3, a, b, dim))
-
+    abs_approx_tols_to_use = [tols.abs_approx_tol]*len(funcs)
+    target_tols_to_use = [tols.target_tol]*len(funcs)
+    if tols.check_eval_error and level%tols.check_eval_freq == 0:
+        #Figure out the best abs approx tol we can hope for based on the function
+        for func_num, func in enumerate(funcs):
+            best_possible_tol = get_abs_approx_tol(func, a, b)
+            abs_approx_tols_to_use[func_num] = max(abs_approx_tols_to_use[func_num], best_possible_tol)
+            target_tols_to_use[func_num] = max(target_tols_to_use[func_num], best_possible_tol)
+            
     # Buffer the interval to solve on a larger interval to account for
     # corners. Right now, it's set to be 5e-10 so that on [-1, 1], the
     # buffer goes out 1e-9 around the initial search interval.
@@ -745,17 +705,12 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
     approx_errors = []
     # Get the chebyshev approximations
     num_funcs = len(funcs)
-    for func_num, (func, good_deg) in enumerate(zip(funcs, good_degs)):
-        if use_target_tol:
-            coeff, inf_norm, approx_error = full_cheb_approximate(func, a, b, deg, tols.target_tol, tols.rel_approx_tol, good_deg)
-        else:
-            coeff, inf_norm, approx_error = full_cheb_approximate(func, a, b, deg, tols.abs_approx_tol, tols.rel_approx_tol, good_deg)
+    for func_num, (func, good_deg, abs_approx_tol) in enumerate(zip(funcs, good_degs, abs_approx_tols_to_use)):
+        coeff, inf_norm, approx_error = full_cheb_approximate(func, a, b, deg, abs_approx_tol, tols.rel_approx_tol, good_deg)
         inf_norms.append(inf_norm)
         approx_errors.append(approx_error)
         # Subdivides if a bad approximation
         if coeff is None:
-            if not trust_small_evals:
-                approx_errors = [max(err,macheps) for err in approx_errors]
             intervals = interval_data.get_subintervals(og_a, og_b, cheb_approx_list, approx_errors, False)
 
             #reorder funcs. TODO: fancier things like how likely it is to pass checks
@@ -764,21 +719,17 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
                 del funcs2[func_num]
                 funcs2.append(func)
             for new_a, new_b in intervals:
-                subdivision_solve_nd(funcs2,new_a,new_b,deg,target_deg,interval_data,root_tracker,tols,max_level,level=level+1, method=method, trust_small_evals=trust_small_evals)
+                subdivision_solve_nd(funcs2,new_a,new_b,deg,target_deg,interval_data,root_tracker,tols,max_level,level=level+1, method=method)
             return
         else:
             # Run checks to try and throw out the interval
-            if not trust_small_evals:
-                approx_error = max(approx_error, macheps)
             if interval_data.check_interval(coeff, approx_error, og_a, og_b):
                 return
 
             cheb_approx_list.append(coeff)
 
     # Reduce the degree of the approximations while not introducing too much error
-    coeffs, good_approx, approx_errors = trim_coeffs(cheb_approx_list, tols.abs_approx_tol, tols.rel_approx_tol, inf_norms, approx_errors)
-    if not trust_small_evals:
-        approx_errors = [max(err, macheps) for err in approx_errors]
+    coeffs, good_approx, approx_errors = trim_coeffs(cheb_approx_list, target_tols_to_use, tols.rel_approx_tol, inf_norms, approx_errors)
     # Used if subdividing further.
     # Only choose good_degs if the approximation after trim_coeffs is good.
     if good_approx:
@@ -791,19 +742,16 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
     if np.any(np.array([coeff.shape[0] for coeff in coeffs]) > target_deg + 1) or not good_approx:
         intervals = interval_data.get_subintervals(og_a, og_b, cheb_approx_list, approx_errors, True)
         for new_a, new_b in intervals:
-            subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method, trust_small_evals=trust_small_evals, use_target_tol=True)
+            subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method)
 
     # Check if any approx error is greater than target_tol for Macaulay method
     elif np.any(np.array(approx_errors) > np.array(tols.target_tol) + tols.rel_approx_tol*np.array(inf_norms)):
         intervals = interval_data.get_subintervals(og_a, og_b, cheb_approx_list, approx_errors, True)
         for new_a, new_b in intervals:
-            subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method, trust_small_evals=trust_small_evals, use_target_tol=True)
+            subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method)
 
     # Check if everything is linear
     elif np.all(np.array([coeff.shape[0] for coeff in coeffs]) == 2):
-        if deg != 2:
-            subdivision_solve_nd(funcs, a, b, 2, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level, method=method, trust_small_evals=trust_small_evals, use_target_tol=True)
-            return
         zero, cond = solve_linear(coeffs)
         # Store the information and exit
         zero = good_zeros_nd(zero, good_zeros_tol, good_zeros_tol)
@@ -821,7 +769,7 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
             # Subdivide but run some checks on the intervals first
             intervals = interval_data.get_subintervals(og_a, og_b, cheb_approx_list, approx_errors, True)
             for new_a, new_b in intervals:
-                subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method, trust_small_evals=trust_small_evals, use_target_tol=True)
+                subdivision_solve_nd(funcs, new_a, new_b, deg, target_deg, interval_data, root_tracker, tols, max_level, good_degs, level+1, method=method)
         else:
             zeros = res
             zeros = good_zeros_nd(zeros, good_zeros_tol, good_zeros_tol)
@@ -830,7 +778,7 @@ def subdivision_solve_nd(funcs, a, b, deg, target_deg, interval_data,
             interval_data.track_interval("Macaulay", [a, b])
             root_tracker.add_roots(zeros, a, b, "Macaulay")
 
-def trim_coeffs(coeffs, abs_approx_tol, rel_approx_tol, inf_norms, errors):
+def trim_coeffs(coeffs, abs_approx_tols, rel_approx_tol, inf_norms, errors):
     """Trim the coefficient matrices to reduce the degree by zeroing out any
     entries in the coefficient matrix above a certain degree.
 
@@ -838,12 +786,12 @@ def trim_coeffs(coeffs, abs_approx_tol, rel_approx_tol, inf_norms, errors):
     ----------
     coeffs : list
         The coefficient matrices of the Chebyshev polynomials we are solving.
-    rel_approx_tol : float or list
+    rel_approx_tol : float
         The relative tolerance used in the approximation tolerance. The error is bouned by
         error < abs_approx_tol + rel_approx_tol * inf_norm_of_approximation
-    abs_approx_tol : float or list
-        The absolute tolerance used in the approximation tolerance. The error is bouned by
-        error < abs_approx_tol + rel_approx_tol * inf_norm_of_approximation
+    abs_approx_tols : list
+        The absolute tolerance used in the approximation tolerance, given seperately for each function. 
+        The error is bouned by error < abs_approx_tol + rel_approx_tol * inf_norm_of_approximation
     inf_norms : list
         The inf norms of the functions
     errors : list
@@ -873,7 +821,7 @@ def trim_coeffs(coeffs, abs_approx_tol, rel_approx_tol, inf_norms, errors):
         slice_error = np.sum(np.abs(coeff[slices]))
         # increment error
         error += slice_error
-        if error > abs_approx_tol+rel_approx_tol*inf_norms[num]:
+        if error > abs_approx_tols[num]+rel_approx_tol*inf_norms[num]:
             # FREAK OUT if we can't zero out everything below the lower-reverse-hyperdiagonal
             good_approx = False
         else:
@@ -888,7 +836,7 @@ def trim_coeffs(coeffs, abs_approx_tol, rel_approx_tol, inf_norms, errors):
                 slices = tuple(mons[:dim])
                 slice_error = np.sum(np.abs(coeff[slices]))
                 # if that introduces too much error, backtrack
-                if slice_error + error > abs_approx_tol+rel_approx_tol*inf_norms[num]:
+                if slice_error + error > abs_approx_tols[num]+rel_approx_tol*inf_norms[num]:
                     if deg < coeff.shape[0]-1:
                         slices = tuple([slice(0, deg+1)]*dim)
                         coeff = coeff[slices]
@@ -993,8 +941,7 @@ def good_zeros_1d(zeros, imag_tol, real_tol):
     return zeros.real
 
 def subdivision_solve_1d(f, a, b, deg, target_deg, interval_data, root_tracker,
-                         tols, max_level, level=0, method='svd',
-                         trust_small_evals=False):
+                         tols, max_level, level=0, method='svd'):
     """Finds the roots of a one-dimensional function using subdivision and
     chebyshev approximation.
 

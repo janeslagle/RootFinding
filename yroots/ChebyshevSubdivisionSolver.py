@@ -355,7 +355,7 @@ def TransformChebInPlace1DErrorFreeSplit(coeffs, betaSign):
 def TransformChebInPlaceND(coeffs, dim, alpha, beta, exact):
     #TODO: Could we calculate the allowed error beforehand and pass it in here?
     #TODO: Make this work for the power basis polynomials
-    if alpha == 1.0 and beta == 0.0:
+    if (alpha == 1.0 and beta == 0.0) or coeffs.shape[dim] == 1:
         return coeffs
     TransformFunc = TransformChebInPlace1DErrorFree if exact else TransformChebInPlace1D
     if dim == 0:
@@ -479,14 +479,20 @@ def getLinearTerms(M):
     -------
     A 1D numpy array with the linear terms of M
     """
+    A = []
     spot = 1
-    MArray = M.ravel()
-    A = [MArray[spot]]
-    for i in M.shape[1:][::-1]:
+    for i in M.shape[::-1]:
+        A.append(0 if i == 1 else M.ravel()[spot])
         spot *= i
-        A.append(MArray[spot])
     return A[::-1]
-
+    
+    #spot = 1
+    #MArray = M.ravel()
+    #A = [MArray[spot]]
+    #for i in M.shape[1:][::-1]:
+    #    spot *= i
+    #    A.append(MArray[spot])
+    #return A[::-1]
 
 def find_vertices(A_ub, b_ub, tol = .05):
     """

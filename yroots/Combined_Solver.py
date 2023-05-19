@@ -46,9 +46,15 @@ def degree_guesser(funcs,guess_degs,default_deg):
             is_lambda_poly[i] = False
         elif is_lambda[i]:
             f_str_lst = inspect.getsource(func).strip().split(":")
+<<<<<<< HEAD
 
             # If the source is the call to the solve function, the source will have 'solve' in it
             # and will be one long line. Thus the splitting functions differently.
+=======
+            
+        # If the source is the call to the solve function, the source will have 'solve' in it
+        # and will be one long line. Thus the splitting functions differently.
+>>>>>>> d9b209a3950b161371b317c7a3130143945342e2
             if "solve" in f_str_lst[0]:
                 vars, expr = f_str_lst[lambda_counter].strip().split('lambda')[1].strip(), f_str_lst[lambda_counter+1].strip().split(',')[0]
                 lambda_counter += 1
@@ -58,7 +64,11 @@ def degree_guesser(funcs,guess_degs,default_deg):
                     expr = expr.split(']')[0]
             else:   
                 vars, expr = f_str_lst[0].strip().split('lambda')[1].strip(), f_str_lst[1].strip().split(',')[0]
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> d9b209a3950b161371b317c7a3130143945342e2
             vars = sy.symbols(vars)
             if "np." in expr:
                 is_lambda_poly[i] = False #not a great check, since polynomials can be expressed with np.array(), but good start

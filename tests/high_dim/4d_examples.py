@@ -6,8 +6,11 @@ from yroots.Combined_Solver import solve
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 from time import time
+import mpmath as mpm
 from mpmath import mp, mpmathify
 mp.dps = 50
+import warnings
+warnings.filterwarnings("error")
 
 def residuals(f,g,h,f4,roots,t):
     Resid = list()
@@ -25,14 +28,10 @@ def residuals(f,g,h,f4,roots,t):
     minutes = int((t%3600) // 60)
     seconds = int((t%3600)%60 // 1)
     msecs = int(np.round((t % 1) * 1000,0))
-    if Resid != []:
-        max_resid = np.amax(Resid)
-    else:
-        max_resid = None
     print("time elapsed: ",hours,"hours,", minutes,"minutes,",seconds, "seconds,",msecs, "milliseconds")
     print("Residuals: ", Resid, "\n")
-    print("Max Residual: ", max_resid)
-    return max_resid
+    print("Max Residual: ", np.amax(Resid))
+    return np.amax(Resid)
 
 def plot_resids(residuals):
     plt.scatter([i+1 for i in range(18)],residuals)
@@ -77,13 +76,14 @@ def ex0(polish=False):
     f4 = lambda x1,x2,x3,x4 : x1 + x2 + x3 + x4
 
     start = time()
-    roots = solve([f1,f2,f3,f4], -np.ones(4), np.ones(4), constant_check=False)
+    roots, _ = solve([f1,f2,f3,f4], -np.ones(4), np.ones(4))
     t = time() - start
     print(roots)
     if polish:
         roots = newton_polish([f1,f2,f3,f4], dex0(), roots)
+        print(roots)
     print("======================= ex 0 =======================")
-    return residuals(f1,f2,f3,f4,roots,t)
+    return roots
 
 def dex0():
     df1 = lambda x1, x2, x3, x4: (1, 0, 0, 0)
@@ -98,58 +98,101 @@ def ex1(polish=False):
     f3 = lambda x1,x2,x3,x4 : np.cos(2*x2) - 3*x3 + 1/(x1-8)
     f4 = lambda x1,x2,x3,x4 : x1 + x2 - x3 - x4
 
-    print("Timing start")
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
+
     start = time()
-    roots = solve([f1,f2,f3,f4], -np.ones(4), np.ones(4))
-    print("Timing finished")
+    roots, _ = solve([f1,f2,f3,f4], a, b)
     t = time() - start
+    print(roots)
+
     if polish:
-        roots = polish([f1,f2,f3,f4], dex1(), roots)
-        print(roots)
+        mf1 = lambda x1,x2,x3,x4 : mpm.sin(x1*x3) + x1*mpm.log(x2+3) - x1**2
+        mf2 = lambda x1,x2,x3,x4 : mpm.cos(4*x1*x2) + mpm.exp(3*x2/(x1-2)) - 5
+        mf3 = lambda x1,x2,x3,x4 : mpm.cos(2*x2) - 3*x3 + 1/(x1-8)
+        mf4 = lambda x1,x2,x3,x4 : x1 + x2 - x3 - x4
+        polished_roots = newton_polish([mf1,mf2,mf3,mf4], dex1(), roots)
+        print("ex 1 polished residuals")
+        max_resid = residuals(mf1,mf2,mf3,mf4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex1_roots", np.stack([closest_float, error]))
+
     print("======================= ex 1 =======================")
     return residuals(f1,f2,f3,f4,roots,t)
 
 def dex1():
-    df1 = lambda x1, x2, x3, x4 : (x3*np.cos(x1*x3) + np.log(x2 + 3) - 2*x1, x1/(x2 + 3), x1*np.cos(x1*x3), 0)
-    df2 = lambda x1, x2, x3, x4 : (-4*x2*np.sin(4*x1*x2) - (3*x2/(x1 - 2)**2)*np.exp(3*x2/(x1 - 2)), 
-                                   -4*x1*np.sin(4*x1*x2) + (3/(x1 - 2))*np.exp(3*x2/(x1 - 2)), 0, 0)
-    df3 = lambda x1, x2, x3, x4 : (-1/(x1 - 8)**2, -2*np.sin(2*x2), -3, 0)
+    df1 = lambda x1, x2, x3, x4 : (x3*mpm.cos(x1*x3) + mpm.log(x2 + 3) - 2*x1, x1/(x2 + 3), x1*mpm.cos(x1*x3), 0)
+    df2 = lambda x1, x2, x3, x4 : (-4*x2*mpm.sin(4*x1*x2) - (3*x2/(x1 - 2)**2)*mpm.exp(3*x2/(x1 - 2)), 
+                                   -4*x1*mpm.sin(4*x1*x2) + (3/(x1 - 2))*mpm.exp(3*x2/(x1 - 2)), 0, 0)
+    df3 = lambda x1, x2, x3, x4 : (-1/(x1 - 8)**2, -2*mpm.sin(2*x2), -3, 0)
     df4 = lambda x1, x2, x3, x4 : (1, 1, -1, -1)
     return df1, df2, df3, df4
 
-def ex2():
+def ex2(polish=False):
     f = lambda x,y,z,x4: np.cosh(4*x*y) + np.exp(z)- 5
     g = lambda x,y,z,x4: x - np.log(1/(y+3))
     h = lambda x,y,z,x4: x**2 -  z
     f4 = lambda x,y,z,x4: x + y + z + x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+    print(roots)
+
+    if polish:
+        mf = lambda x,y,z,x4: mpm.cosh(4*x*y) + mpm.exp(z)- 5
+        mg = lambda x,y,z,x4: x - mpm.log(1/(y+3))
+        mh = lambda x,y,z,x4: x**2 -  z
+        mf4 = lambda x,y,z,x4: x + y + z + x4
+        polished_roots = newton_polish([mf,mg,mh,mf4], dex2(), roots)
+        print("ex 2 polished residuals")
+        max_resid = residuals(mf,mg,mh,mf4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex2_roots", np.stack([closest_float, error]))
+    
+    print("======================= ex 2 =======================")
     return residuals(f,g,h,f4,roots,t)
 
 def dex2():
-    df = lambda x, y, z, x4 : (4*y*np.sinh(4*x*y), 4*x*np.sinh(4*x*y), np.exp(z), 0)
+    df = lambda x, y, z, x4 : (4*y*mpm.sinh(4*x*y), 4*x*mpm.sinh(4*x*y), mpm.exp(z), 0)
     dg = lambda x, y, z, x4 : (1, 1/(y+3), 0, 0)
     dh = lambda x, y, z, x4 : (2*x, 0, -1, 0)
-    df4 = lambda x, y, z, x4 : (1, 1, -1, -1)
+    df4 = lambda x, y, z, x4 : (1, 1, 1, 1)
     return df, dg, dh, df4
 
-def ex3():
+def ex3(polish=False):
     f = lambda x,y,z,x4: y**2-x**3
     g = lambda x,y,z,x4: (y+.1)**3-(x-.1)**2
     h = lambda x,y,z,x4: x**2 + y**2 + z**2 - 1
     f4 = lambda x,y,z,x4: x + y + z + x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+
+    if polish:
+        polished_roots = newton_polish([f,g,h,f4], dex3(), roots)
+        print("ex 3 polished residuals")
+        max_resid = residuals(f,g,h,f4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex3_roots", np.stack([closest_float, error]))
+    
+    print("======================= ex 3 =======================")
     return residuals(f,g,h,f4,roots,t)
 
 def dex3():
@@ -159,18 +202,31 @@ def dex3():
     df4 = lambda x, y, z, x4 : (1, 1, 1, 1)
     return df, dg, dh, df4
 
-def ex4():
+def ex4(polish=False):
     f = lambda x,y,z,x4: 2*z**11 + 3*z**9 - 5*z**8 + 5*z**3 - 4*z**2 - 1
     g = lambda x,y,z,x4: 2*y + 18*z**10 + 25*z**8 - 45*z**7 - 5*z**6 + 5*z**5 - 5*z**4 + 5*z**3 + 40*z**2 - 31*z - 6
     h = lambda x,y,z,x4: 2*x - 2*z**9 - 5*z**7 + 5*z**6 - 5*z**5 + 5*z**4 - 5*z**3 + 5*z**2 + 1
     f4 = lambda x,y,z,x4: x - y - z + x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+    print(roots)
+
+    if polish:
+        polished_roots = newton_polish([f,g,h,f4], dex4(), roots)
+        print("ex 4 polished residuals")
+        max_resid = residuals(f,g,h,f4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex4_roots", np.stack([closest_float, error]))
+
+    print("======================= ex 4 =======================")
     return residuals(f,g,h,f4,roots,t)
 
 def dex4():
@@ -178,81 +234,143 @@ def dex4():
     dg = lambda x, y, z, x4 : (0, 2, 180*z**9 + 200*z**7 - 315*z**6 - 30*z**5 + 25*z**4 - 10*z**3 + 15*z**2 + 80*z - 31, 0)
     dh = lambda x, y, z, x4 : (2, 0, -18*z**8 - 35*z**6 + 30*z**5 - 25*z**4 + 20*z**3 - 15*z**2 + 10*z, 0)
     df4 = lambda x, y, z, x4 : (1, -1, -1, 1)
+    return df, dg, dh, df4
 
-def ex5():
+def ex5(polish=False):
     f = lambda x,y,z,x4: np.sin(4*(x + z) * np.exp(y))
     g = lambda x,y,z,x4: np.cos(2*(z**3 + y + np.pi/7))
     h = lambda x,y,z,x4: 1/(x+5) - y
     f4 = lambda x,y,z,x4: x - y + z - x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+    print(roots)
+
+    if polish:
+        mf = lambda x,y,z,x4: mpm.sin(4*(x + z) * mpm.exp(y))
+        mg = lambda x,y,z,x4: mpm.cos(2*(z**3 + y + np.pi/7))
+        mh = lambda x,y,z,x4: 1/(x+5) - y
+        mf4 = lambda x,y,z,x4: x - y + z - x4
+        polished_roots = newton_polish([mf,mg,mh,mf4], dex5(), roots)
+        print("ex 5 polished residuals")
+        max_resid = residuals(mf,mg,mh,mf4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex5_roots", np.stack([closest_float, error]))
+
     return residuals(f,g,h,f4,roots,t)
 
 def dex5():
-    df = lambda x, y, z, x4 : (4*np.exp(y)*np.sin(4*(x + z)*np.exp(y)), 4*(x + z)*np.exp(y)*np.cos(4*(x + z)*np.exp(y)), 
-                               4*np.exp(y)*np.sin(4*(x + z)*np.exp(y)), 0)
-    dg = lambda x, y, z, x4 : (0, -2*np.sin(2*(z**3+y+np.pi/7)), -6*z**2*np.sin(2*(z**3 + y + np.pi/7)), 0)
+    df = lambda x, y, z, x4 : (4*mpm.exp(y)*mpm.cos(4*(x + z)*mpm.exp(y)), 4*(x + z)*mpm.exp(y)*mpm.cos(4*(x + z)*mpm.exp(y)), 
+                               4*mpm.exp(y)*mpm.cos(4*(x + z)*mpm.exp(y)), 0)
+    dg = lambda x, y, z, x4 : (0, -2*mpm.sin(2*(z**3+y+np.pi/7)), -6*z**2*mpm.sin(2*(z**3 + y + np.pi/7)), 0)
     dh = lambda x, y, z, x4 : (-1/(x + 5)**2, -1, 0, 0)
     df4 = lambda x, y, z, x4 : (1, -1, 1, -1)
+    return df, dg, dh, df4
 
 #returns known residual of Rosenbrock in 4d
 def ex6():
     return 1.11071152275615E-10
 
-def ex7():
+def ex7(polish=False):
     f = lambda x,y,z,x4: np.cos(10*x*y)
     g = lambda x,y,z,x4: x + y**2
     h = lambda x,y,z,x4: x + y - z
     f4 = lambda x,y,z,x4: x - y + z + x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+    print(roots)
+
+    if polish:
+        mf = lambda x,y,z,x4: mpm.cos(10*x*y)
+        mg = lambda x,y,z,x4: x + y**2
+        mh = lambda x,y,z,x4: x + y - z
+        mf4 = lambda x,y,z,x4: x - y + z + x4
+        polished_roots = newton_polish([mf,mg,mh,mf4], dex5(), roots)
+        print("ex 7 polished residuals")
+        max_resid = residuals(mf,mg,mh,mf4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex7_roots", np.stack([closest_float, error]))
+
     return residuals(f,g,h,f4,roots,t)
 
 def dex7():
-    df = lambda x, y, z, x4 : (10*y*np.cos(10*x*y), 10*x*np.cos(10*x*y), 0, 0)
+    df = lambda x, y, z, x4 : (-10*y*mpm.sin(10*x*y), -10*x*mpm.sin(10*x*y), 0, 0)
     dg = lambda x, y, z, x4 : (1, 2*y, 0, 0)
     dh = lambda x, y, z, x4 : (1, 1, -1, 0)
     df4 = lambda x, y, z, x4 : (1, -1, 1, 1)
+    return df, dg, dh, df4
 
-def ex8():
+def ex8(polish=False):
     f = lambda x,y,z,x4: np.exp(2*x)-3
     g = lambda x,y,z,x4: -np.exp(x-2*y) + 11
     h = lambda x,y,z,x4: x + y + 3*z
     f4 = lambda x,y,z,x4: x + y + z + x4
 
-    a = [-1,-1,-1,-1]
-    b = [1,1,1,1]
+    a = np.array([-1,-1,-1,-1])
+    b = np.array([1,1,1,1])
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots, _ = solve([f,g,h,f4], a, b)
     t = time() - start
+
+    if polish:
+        mf = lambda x,y,z,x4: mpm.exp(2*x)-3
+        mg = lambda x,y,z,x4: -mpm.exp(x-2*y) + 11
+        mh = lambda x,y,z,x4: x + y + 3*z
+        mf4 = lambda x,y,z,x4: x + y + z + x4
+        polished_roots = newton_polish([mf,mg,mh,mf4], dex8(), roots)
+        print("ex 8 polished residuals")
+        max_resid = residuals(mf,mg,mh,mf4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex8_roots", np.stack([closest_float, error]))
+
     return residuals(f,g,h,f4,roots,t)
 
 def dex8():
-    df = lambda x, y, z, x4 : (2*np.exp(2*x), 0, 0, 0)
-    dg = lambda x, y, z, x4 : (-np.exp(x - 2*y), 2*np.exp(x - 2*y), 0, 0)
+    df = lambda x, y, z, x4 : (2*mpm.exp(2*x), 0, 0, 0)
+    dg = lambda x, y, z, x4 : (-mpm.exp(x - 2*y), 2*mpm.exp(x - 2*y), 0, 0)
     dh = lambda x, y, z, x4 : (1, 1, 3, 0)
     df4 = lambda x, y, z, x4 : (1, 1, 1, 1)
+    return df, dg, dh, df4
 
-def ex9():
+def ex9(polish=False):
     f1 = lambda x,y,z,x4: 2*x / (x**2-4) - 2*x
     f2 = lambda x,y,z,x4: 2*y / (y**2+4) - 2*y
     f3 = lambda x,y,z,x4: 2*z / (z**2-4) - 2*z
     f4 = lambda x,y,z,x4: 2*x4 / (x4 **2 - 4) - 2*x4
 
     start = time()
-    roots = solve([f1,f2,f3], -np.ones(4), np.ones(4))
+    roots, _ = solve([f1,f2,f3,f4],np.array([-1,-1,-1,-1]),np.array([1,1,1,1]))
     t = time() - start
+
+    if polish:
+        polished_roots = newton_polish([f1,f2,f3,f4], dex9(), roots)
+        print("ex 9 polished residuals")
+        max_resid = residuals(f1,f2,f3,f4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex9_roots", np.stack([closest_float, error]))
+    
     return residuals(f1,f2,f3,f4,roots,t)
 
 def dex9():
@@ -260,16 +378,28 @@ def dex9():
     df2 = lambda x, y, z, x4 : (0, 2*(y**2 - 4)/(y**2 + 4)**2 - 2, 0, 0)
     df3 = lambda x, y, z, x4 : (0, 0, 2*(z**2 + 4)/(z**2 - 4)**2 - 2, 0)
     df4 = lambda x, y, z, x4 : (0, 0, 0, x*(x4**2 + 4)/(x4**2 - 4)**2 - 2)
+    return df1, df2, df3, df4
 
-def ex10():
+def ex10(polish=False):
     f = lambda x,y,z,x4: 2*x**2 / (x**4-4) - 2*x**2 + .5
     g = lambda x,y,z,x4: 2*x**2*y / (y**2+4) - 2*y + 2*x*z
     h = lambda x,y,z,x4: 2*z / (z**2-4) - 2*z
     f4 = lambda x,y,z,x4:x + y + z + x4
 
     start = time()
-    roots = solve([f, g, h, f4], np.array([-1,-1,-1,-1]), np.array([1,1,.8,1]))
+    roots, _ = solve([f,g,h,f4],np.array([-1,-1,-1,-1]),np.array([1,1,.8,1]))
     t = time() - start
+
+    if polish:
+        polished_roots = newton_polish([f,g,h,f4], dex10(), roots)
+        print("ex 10 polished residuals")
+        max_resid = residuals(f,g,h,f4,polished_roots,t)
+        print(polished_roots)
+        if max_resid <= mp.mpf(1e-20):
+            closest_float = polished_roots.astype(float)
+            error = (polished_roots - closest_float).astype(float)
+            np.save("4d_polished_roots/ex10_roots", np.stack([closest_float, error]))
+
     return residuals(f,g,h,f4,roots,t)
 
 def dex10():
@@ -286,7 +416,7 @@ def ex11():
     f4 = lambda x,y,z,x4:-x - y + z - x4
 
     start = time()
-    roots = solve([f,g,h,f4],np.array([-1,-1,-2,-1]),np.array([1,1,2,1]))
+    roots = yr.solve([f,g,h,f4],[-1,-1,-2,-1],[1,1,2,1])
     t = time() - start
     return residuals(f,g,h,f4,roots,t)
 
@@ -307,7 +437,7 @@ def ex12():
     b = [1,1,1,1]
 
     start = time()
-    roots = solve([f,g,h,f4], -np.ones(4), np.ones(4))
+    roots = solve([f,g,h,f4], a, b)
     t = time() - start
     return residuals(f,g,h,f4,roots,t)
 
@@ -454,4 +584,4 @@ def dex18():
 if __name__ == "__main__":
     # max_residuals = [ex1(),ex2(),ex3(),ex4(),ex5(),ex6(),ex7(),ex8(),ex9(),ex10(),ex11(),ex12(),ex13(),ex14(),ex15(),ex16(),ex17(),ex18()]
     # plot_resids(max_residuals)
-    ex0()
+    ex10(polish=True)

@@ -46,15 +46,10 @@ def degree_guesser(funcs,guess_degs,default_deg):
             is_lambda_poly[i] = False
         elif is_lambda[i]:
             f_str_lst = inspect.getsource(func).strip().split(":")
-<<<<<<< HEAD
+
 
             # If the source is the call to the solve function, the source will have 'solve' in it
             # and will be one long line. Thus the splitting functions differently.
-=======
-            
-        # If the source is the call to the solve function, the source will have 'solve' in it
-        # and will be one long line. Thus the splitting functions differently.
->>>>>>> d9b209a3950b161371b317c7a3130143945342e2
             if "solve" in f_str_lst[0]:
                 vars, expr = f_str_lst[lambda_counter].strip().split('lambda')[1].strip(), f_str_lst[lambda_counter+1].strip().split(',')[0]
                 lambda_counter += 1
@@ -64,11 +59,7 @@ def degree_guesser(funcs,guess_degs,default_deg):
                     expr = expr.split(']')[0]
             else:   
                 vars, expr = f_str_lst[0].strip().split('lambda')[1].strip(), f_str_lst[1].strip().split(',')[0]
-<<<<<<< HEAD
 
-=======
-                
->>>>>>> d9b209a3950b161371b317c7a3130143945342e2
             vars = sy.symbols(vars)
             if "np." in expr:
                 is_lambda_poly[i] = False #not a great check, since polynomials can be expressed with np.array(), but good start
@@ -79,7 +70,7 @@ def degree_guesser(funcs,guess_degs,default_deg):
                 guess_degs[i] = max(sy.degree_list(expr))
     return [is_lambda_poly, is_routine, is_lambda, guess_degs]
 
-def solve(funcs,a,b,guess_degs=None,max_deg_edit=None,rescale=False,rel_approx_tol=1.e-15, abs_approx_tol=1.e-12, 
+def solve(funcs,a=None,b=None,guess_degs=None,max_deg_edit=None,rescale=False,rel_approx_tol=1.e-15, abs_approx_tol=1.e-12, 
           returnBoundingBoxes = False, exact=False, constant_check = True, low_dim_quadratic_check = True,
           all_dim_quadratic_check = False):
     """
@@ -142,7 +133,7 @@ def solve(funcs,a,b,guess_degs=None,max_deg_edit=None,rescale=False,rel_approx_t
         raise ValueError("At least one lower bound is >= an upper bound.")
     
     is_neg1_1 = True
-    arr_neg1 = np.array([-1.]*len(a)) #what if a>b
+    arr_neg1 = -np.ones(len(a))
     arr_1 = np.ones(len(a))
 
     if np.allclose(arr_neg1,a,rtol=1e-08) and np.allclose(arr_1,b,rtol=1e-08):

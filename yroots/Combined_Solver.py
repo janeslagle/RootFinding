@@ -35,11 +35,6 @@ def degree_guesser(funcs,guess_degs,default_deg):
         routine_true_idxs = np.where(routine_mask == True)[0]
         funcs_routines = np.array([funcs[idx] for idx in routine_true_idxs]) #indices of funcs that are routines
         lambda_mask = np.array([True if "lambda" in inspect.getsource(func) else False for func in funcs_routines])
-        is_lambda[routine_mask][~lambda_mask] = 0 #update assumption where necessary
-        
-    
-    # Counts how many lambda functions are typed directly as parameters into the call to solve.
-
         is_lambda[routine_mask][~lambda_mask] = 0 # Set is_lambda false for all funcs that are routines but do not contain "lambda"
 
     # Keeps track of how many lambda functions are typed directly as parameters into the call to solve.
@@ -51,8 +46,6 @@ def degree_guesser(funcs,guess_degs,default_deg):
             is_lambda_poly[i] = False
         elif is_lambda[i]:
             f_str_lst = inspect.getsource(func).strip().split(":")
-
-
             # If the source is the call to the solve function, the source will have 'solve' in it
             # and will be one long line. Thus the splitting functions differently.
             if "solve" in f_str_lst[0]:
@@ -64,7 +57,6 @@ def degree_guesser(funcs,guess_degs,default_deg):
                     expr = expr.split(']')[0]
             else: # the function was defined outside of the call to solve and can be split as normal  
                 vars, expr = f_str_lst[0].strip().split('lambda')[1].strip(), f_str_lst[1].strip().split(',')[0]
-
             vars = sy.symbols(vars)
             if "np." in expr:
                 is_lambda_poly[i] = False #not a great check, since polynomials can be expressed with np.array(), but good start
@@ -118,17 +110,12 @@ def solve(funcs,a=None,b=None,guess_degs=None,max_deg_edit=None,rescale=False,re
     #TODO: handle for case that input degree is above max_deg (provide a warning)
     #TODO: decide whether to move degree_guesser --> utils.py
 
-
-
-    # Convert the given bounds a, b into np.array format
-
     #Initialize a, b to negative ones and ones if no argument passed in
     if a == None:
         a = -np.ones(len(funcs))
     if b == None:
         b = np.ones(len(funcs))
     # Convert any given bounds a, b into np.array format
-
     if type(a) == list:
         a = np.array(a)
     if type(b) == list:
@@ -203,4 +190,5 @@ def solve(funcs,a=None,b=None,guess_degs=None,max_deg_edit=None,rescale=False,re
         if is_neg1_1 == False and len(yroots) > 0:
             yroots = transform(yroots,a,b)
         return yroots
+        
         

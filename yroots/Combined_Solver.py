@@ -35,16 +35,14 @@ def degree_guesser(funcs,guess_degs,default_deg):
         routine_true_idxs = np.where(routine_mask == True)[0]
         funcs_routines = np.array([funcs[idx] for idx in routine_true_idxs]) #indices of funcs that are routines
         lambda_mask = np.array([True if "lambda" in inspect.getsource(func) else False for func in funcs_routines])
-<<<<<<< HEAD
         is_lambda[routine_mask][~lambda_mask] = 0 #update assumption where necessary
         
     
     # Counts how many lambda functions are typed directly as parameters into the call to solve.
-=======
+
         is_lambda[routine_mask][~lambda_mask] = 0 # Set is_lambda false for all funcs that are routines but do not contain "lambda"
 
     # Keeps track of how many lambda functions are typed directly as parameters into the call to solve.
->>>>>>> 6548d9497157eef68b4d631e3e83120821354c06
     lambda_counter = 0
 
     for i,func in enumerate(funcs):
@@ -120,17 +118,17 @@ def solve(funcs,a=None,b=None,guess_degs=None,max_deg_edit=None,rescale=False,re
     #TODO: handle for case that input degree is above max_deg (provide a warning)
     #TODO: decide whether to move degree_guesser --> utils.py
 
-<<<<<<< HEAD
+
 
     # Convert the given bounds a, b into np.array format
-=======
+
     #Initialize a, b to negative ones and ones if no argument passed in
     if a == None:
         a = -np.ones(len(funcs))
     if b == None:
         b = np.ones(len(funcs))
     # Convert any given bounds a, b into np.array format
->>>>>>> 6548d9497157eef68b4d631e3e83120821354c06
+
     if type(a) == list:
         a = np.array(a)
     if type(b) == list:

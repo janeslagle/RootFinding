@@ -39,3 +39,5 @@ jobs:
     - name: execute test files
       run: |
         python tests/test_Combined_Solver.py
+        python tests/test_ChebyshevSubdivisionSolver.py
+        

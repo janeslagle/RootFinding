@@ -38,4 +38,4 @@ jobs:
         conda install pytest-runner
     - name: execute test files
       run: |
-        python tests/test_Combined_Solver.py
+        python RootFinding/tests/test_Combined_Solver.py

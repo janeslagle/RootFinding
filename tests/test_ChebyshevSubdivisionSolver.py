@@ -1,4 +1,5 @@
 import pytest
+import yroots
 import yroots.ChebyshevSubdivisionSolver as chebsolver
 import numpy as np
 from mpmath import mp

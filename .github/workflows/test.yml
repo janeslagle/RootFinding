@@ -37,6 +37,8 @@ jobs:
         conda install matplotlib
         conda install pytest-cov
         conda install pytest-runner
+        mkdir RootFinding
+        cd RootFinding
         pip install -e yroots
     - name: execute test files
       run: |

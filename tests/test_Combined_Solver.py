@@ -4,7 +4,6 @@ TODO: add checks in higher dimensions or make sure that these checks are
 representative of higher dimensions
 """
 import numpy as np
-import yroots
 import yroots.M_maker as M_maker
 import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
 import pytest

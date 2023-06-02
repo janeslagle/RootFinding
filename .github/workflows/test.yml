@@ -33,9 +33,10 @@ jobs:
         conda install numpy
         conda install numba 
         conda install sympy
+        conda install scipy
         conda install matplotlib
         conda install pytest-cov
         conda install pytest-runner
     - name: execute test files
       run: |
-        python tests/test_Combined_Solver.py
+        python3 -u -m unittest tests/test_Combined_Solver.py

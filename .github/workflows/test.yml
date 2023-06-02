@@ -37,7 +37,7 @@ jobs:
         conda install matplotlib
         conda install pytest-cov
         conda install pytest-runner
-        conda install yroots
+        pip install -e yroots
     - name: execute test files
       run: |
         python tests/test_Combined_Solver.py

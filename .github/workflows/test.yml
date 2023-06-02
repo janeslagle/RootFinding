@@ -39,7 +39,7 @@ jobs:
         conda install pytest-runner
         mkdir RootFinding
         cd RootFinding
-        pip install -e yroots
+        pip install -e .
     - name: execute test files
       run: |
         python tests/test_Combined_Solver.py

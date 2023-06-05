@@ -7,6 +7,7 @@ import numpy as np
 import yroots.M_maker as M_maker
 import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
 import pytest
+import unittest
 from yroots.polynomial import MultiCheb, MultiPower
 from yroots.utils import transform
 from yroots.Combined_Solver import solve, degree_guesser

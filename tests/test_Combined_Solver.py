@@ -18,8 +18,6 @@ f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
 g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
 f_deg,g_deg = 20,20
 
-assertEqual(2, 4, msg = "This should make it fail!")   # this should make it fail AHHHHHHHHHHHHHHHHHH
-
 def solver_check(funcs,a,b):
     """
     parameters
@@ -36,6 +34,8 @@ def solver_check(funcs,a,b):
 
     f,g = funcs
     yroots_1 = solve(funcs,a,b)
+    
+    assertEqual(2, 4, msg = "This should make it fail!")   # this should make it fail AHHHHHHHHHHHHHHHHHH
 
     arr_neg1 = np.array([-1]*len(a))
     arr_1 = np.ones(len(a))

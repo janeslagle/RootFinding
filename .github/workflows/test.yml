@@ -38,7 +38,9 @@ jobs:
         conda install pytest-cov
         conda install pytest-runner
         pip install -e .
-    - name: execute test files
+    - name: execute Combined_Solver tests
       run: |
         python tests/test_Combined_Solver.py
-        python tests/test_ChebyshevSubdivisionSolver.py
+    - name: execute ChebyshevSubdivisionSolver tests
+      run: |
+        python tests/test_ChebyshevSubdivisionSolver.py 

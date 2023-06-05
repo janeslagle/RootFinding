@@ -17,7 +17,7 @@ f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
 g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
 f_deg,g_deg = 20,20
 
-assertTrue(2==4)   # this should make it fail AHHHHHHHHHHHHHHHHHH
+assertEqual(2, 4, msg = "This should make it fail!")   # this should make it fail AHHHHHHHHHHHHHHHHHH
 
 def solver_check(funcs,a,b):
     """

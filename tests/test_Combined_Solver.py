@@ -17,6 +17,8 @@ f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
 g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
 f_deg,g_deg = 20,20
 
+assertTrue(2==4)   # this should make it fail AHHHHHHHHHHHHHHHHHH
+
 def solver_check(funcs,a,b):
     """
     parameters
@@ -203,8 +205,6 @@ def test_deg_inf():
     g = MultiCheb(M_maker.M_maker(g,a,b,g_deg).M)
     funcs = [f,g,h]
     guess_degs = None
-    
-    assertTrue(f==g)   # this should make it fail AHHHHHHHHHHHHHHHHHH
 
     default_deg = 2
     is_lambda_poly, is_routine, is_lambda, guess_degs = degree_guesser(funcs,guess_degs,default_deg)

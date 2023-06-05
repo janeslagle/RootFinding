@@ -204,7 +204,7 @@ def test_deg_inf():
     funcs = [f,g,h]
     guess_degs = None
     
-    assertEqual(f, g, msg = "This should cause the actions to fail because this is false!")  # this should make it fail !!!! AHHHHHHHHH
+    assertTrue(f==g)   # this should make it fail AHHHHHHHHHHHHHHHHHH
 
     default_deg = 2
     is_lambda_poly, is_routine, is_lambda, guess_degs = degree_guesser(funcs,guess_degs,default_deg)

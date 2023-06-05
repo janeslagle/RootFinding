@@ -203,6 +203,8 @@ def test_deg_inf():
     g = MultiCheb(M_maker.M_maker(g,a,b,g_deg).M)
     funcs = [f,g,h]
     guess_degs = None
+    
+    assertEquals(f, g)
 
     default_deg = 2
     is_lambda_poly, is_routine, is_lambda, guess_degs = degree_guesser(funcs,guess_degs,default_deg)

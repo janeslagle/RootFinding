@@ -221,7 +221,7 @@ if __name__ == '__main__':
     f_deg,g_deg = 20,20
     
     #test each function now by calling them!
-    solver_check([f,g],-f_deg,g_deg)
+    solver_check([f,g],np.ones(f_deg),np.ones(g_deg))
     
 pass
 

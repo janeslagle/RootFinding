@@ -216,5 +216,15 @@ def test_deg_inf():
     assert (is_routine == np.array([True,False,True])).all()
     assert (is_lambda == np.array([True,False,True])).all() #TODO:need a test case for python functions with lambda not in the function definition, so is_routine is not is_lambda
     assert (guess_degs == np.array([3,3,2])).all()
+    
+if __name__ == '__main__':
+    f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
+    g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
+    f_deg,g_deg = 20,20
+    
+    #test each function now by calling them!
+    solver_check([f,g],f_deg,g_deg)
+    
+pass
 
     #now, a standard test for finding all the roots

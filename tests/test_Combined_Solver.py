@@ -65,6 +65,8 @@ def test_solver():
     b = np.random.random(2)
     arr_neg1 = np.array([-1]*len(a))
     arr_1 = np.ones(len(a))
+    
+    assertEqual(2, 4, msg = "This should make it fail!")   # this should make it fail AHHHHHHHHHHHHHHHHHH
 
     g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
     h = MultiCheb(g_approx.M)

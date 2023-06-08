@@ -35,8 +35,6 @@ def solver_check(funcs,a,b):
     f,g = funcs
     yroots_1 = solve(funcs,a,b)
     
-    assertEqual(2, 4, msg = "This should make it fail!")   # this should make it fail AHHHHHHHHHHHHHHHHHH
-
     arr_neg1 = np.array([-1]*len(a))
     arr_1 = np.ones(len(a))
 

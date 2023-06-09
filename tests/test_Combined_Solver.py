@@ -64,8 +64,6 @@ def test_solver():
     arr_neg1 = np.array([-1]*len(a))
     arr_1 = np.ones(len(a))
     
-    assertTrue(2==4)   # this should make it fail AHHHHHHHHHHHHHHHHHH
-
     g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
     h = MultiCheb(g_approx.M)
     f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)

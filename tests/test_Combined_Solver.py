@@ -220,8 +220,16 @@ if __name__ == '__main__':
     g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
     f_deg,g_deg = 20,20
     
-    #test each function now by calling them!
-    solver_check([f,g],np.ones(f_deg),np.ones(g_deg))
+    #test each function now by actually calling them!
+    
+    #this func returns a bool so know it ran successfully if returns true
+    if (solver_check([f,g],np.ones(2),np.ones(2))):
+        pass   #continue on to next test if this one ran successfully
+    else:
+        print("Failed to run solver_check() successfully")
+        
+    
+        
     
 pass
 

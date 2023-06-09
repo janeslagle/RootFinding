@@ -80,7 +80,7 @@ def test_solver():
     
     #If made it here in the file then means did not run into any assert statements
     #I, Jane, am obsessed with our GitHub actions printing out that all tests were passed at the end so I am weirdly making all of these unit tests return true 
-    #So that I can acurately print that out... it will appease me loads to have this printed
+    #So that I can acurately print that out... it will appease me loads to have this printed even though no one will probably ever click on the job ran to even see it
     return true
 
 def test_bad_intervals():

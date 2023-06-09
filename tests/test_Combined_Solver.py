@@ -221,10 +221,12 @@ if __name__ == '__main__':
     f_deg,g_deg = 20,20
     
     #test each function now by actually calling them!
+    tests_passed = 0     #will act as counter for the number of tests in this file that passed
     
     #this func returns a bool so know it ran successfully if returns true
     if (solver_check([f,g],-np.ones(2),np.ones(2))):
-        pass   #continue on to next test if this one ran successfully
+        tests_passed += 1
+        print("hi!")
     else:
         print("Failed to run solver_check() successfully")
         

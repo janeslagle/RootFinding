@@ -8,7 +8,7 @@ on:
   
 
 jobs:
-  tests:
+  Set-up:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5
@@ -38,6 +38,19 @@ jobs:
         conda install pytest-cov
         conda install pytest-runner
         pip install -e .
+
+  Combined-Solver-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    
     - name: execute Combined_Solver tests
       run: |
         python tests/test_Combined_Solver.py

@@ -226,7 +226,7 @@ if __name__ == '__main__':
         tests_passed += 1
     else:
         print("Failed to run solver_check() successfully")
-    test_solver()
+    test_bad_intervals()
         
     
         

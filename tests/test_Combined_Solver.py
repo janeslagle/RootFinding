@@ -78,7 +78,9 @@ def test_solver():
     assert solver_check([k,g],a,b) == True #some multicheb and neg1_1
     assert solver_check([h,k],a,b) == True #all multicheb and neg1_1
     
-    #if made it here in the file then means did not run into any assert statement failures so reflect that
+    #If made it here in the file then means did not run into any assert statements
+    #I, Jane, am obsessed with our GitHub actions printing out that all tests were passed at the end so I am weirdly making all of these unit tests return true 
+    #So that I can acurately print that out... it will appease me loads to have this printed
     return true
 
 def test_bad_intervals():
@@ -233,48 +235,30 @@ if __name__ == '__main__':
     g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
     f_deg,g_deg = 20,20
     
-    #test each function now by actually calling them!
-    tests_passed = 0     #will act as counter for the number of tests in this file that passed
+    #Test each function now by actually calling them!
     
-    #this func returns a bool so know it ran successfully if returns true
-    if (solver_check([f,g],-np.ones(2),np.ones(2))):
+    tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
+    
+    if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         tests_passed += 1
     else:
         print("Failed to run solver_check() successfully")
     if (test_solver()):
         tests_passed += 1
-    else:
-        print("Failed to run test_solver() successfully")
     if (test_bad_intervals()):
         tests_passed += 1
-    else:
-        print("Failed to run test_bad_intervals() successfully")
     if (test_exact_option()):
         tests_passed += 1
-    else:
-        print("Failed to run test_exact_option() successfully")
     if (testreturnBoundingBoxes):
         tests_passed += 1
-    else:
-        print("Failed to run testreturnBoundingBoxes() successfully")
     if (testoutside_neg1_pos1()):
         tests_passed += 1
-    else:
-        print("Failed to run testoutside_neg1_pos1() successfully")
     if (test_default_nodeg()):
         tests_passed += 1
-    else:
-        print("Failed to run test_default_nodeg() successfully")
     if (test_deg_inf()):
         tests_passed += 1
-    else:
-        print("Failed to run test_deg_inf() successfully")
     
-    #now print out how many tests ran successfully
+    #Print out message saying if all tests were passed
     if (tests_passed == 8):
-        print("All tests passed - woohoo!!!")
-    else:
-        print("Uh oh, only " + string(tests_passed) + " tests passed out of the 8 total tests...")    
+        print("SUCCESS!!! ALL TESTS PASSED!!!")   
 pass
-
-    #now, a standard test for finding all the roots

@@ -226,9 +226,9 @@ if __name__ == '__main__':
     #this func returns a bool so know it ran successfully if returns true
     if (solver_check([f,g],-np.ones(2),np.ones(2))):
         tests_passed += 1
-        print("hi!")
     else:
         print("Failed to run solver_check() successfully")
+    test_solver()
         
     
         

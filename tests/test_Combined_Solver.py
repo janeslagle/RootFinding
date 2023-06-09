@@ -77,6 +77,9 @@ def test_solver():
     assert solver_check([f,g],a,b) == True #none multicheb and neg1_1
     assert solver_check([k,g],a,b) == True #some multicheb and neg1_1
     assert solver_check([h,k],a,b) == True #all multicheb and neg1_1
+    
+    #if made it here in the file then means did not run into any assert statement failures so reflect that
+    return true
 
 def test_bad_intervals():
     """
@@ -94,6 +97,8 @@ def test_bad_intervals():
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
+    
+    return true
 
 def test_exact_option():
     """
@@ -128,6 +133,8 @@ def test_exact_option():
     assert np.allclose(yroots_exact,chebfun_roots)
     assert np.allclose(yroots_non_exact,actual_roots)
     assert np.allclose(yroots_non_exact,chebfun_roots)
+    
+    return true
 
 def testreturnBoundingBoxes():
     """
@@ -149,6 +156,8 @@ def testreturnBoundingBoxes():
         box = ChebyshevSubdivisionSolver.TrackedInterval(box)
         assert box.__contains__(root) == True
 
+    return true
+    
 def testoutside_neg1_pos1():
     """
     Let the search interval be larger than [-1,1]^n.
@@ -166,6 +175,8 @@ def testoutside_neg1_pos1():
     for root, box in zip(yroots,boxes):
         box = ChebyshevSubdivisionSolver.TrackedInterval(box)
         assert box.__contains__(root) == True
+    
+    return true
 
 def test_default_nodeg():
     """
@@ -189,6 +200,8 @@ def test_default_nodeg():
 
     assert np.allclose(yroots,actual_roots)
     assert np.allclose(yroots,chebfun_roots)
+    
+    return true
 
 def test_deg_inf():
     """
@@ -213,6 +226,8 @@ def test_deg_inf():
     assert (is_lambda == np.array([True,False,True])).all() #TODO:need a test case for python functions with lambda not in the function definition, so is_routine is not is_lambda
     assert (guess_degs == np.array([3,3,2])).all()
     
+    return true
+    
 if __name__ == '__main__':
     f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
     g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
@@ -226,11 +241,40 @@ if __name__ == '__main__':
         tests_passed += 1
     else:
         print("Failed to run solver_check() successfully")
-    test_bad_intervals()
-        
+    if (test_solver()):
+        tests_passed += 1
+    else:
+        print("Failed to run test_solver() successfully")
+    if (test_bad_intervals()):
+        tests_passed += 1
+    else:
+        print("Failed to run test_bad_intervals() successfully")
+    if (test_exact_option()):
+        tests_passed += 1
+    else:
+        print("Failed to run test_exact_option() successfully")
+    if (testreturnBoundingBoxes):
+        tests_passed += 1
+    else:
+        print("Failed to run testreturnBoundingBoxes() successfully")
+    if (testoutside_neg1_pos1()):
+        tests_passed += 1
+    else:
+        print("Failed to run testoutside_neg1_pos1() successfully")
+    if (test_default_nodeg()):
+        tests_passed += 1
+    else:
+        print("Failed to run test_default_nodeg() successfully")
+    if (test_deg_inf()):
+        tests_passed += 1
+    else:
+        print("Failed to run test_deg_inf() successfully")
     
-        
-    
+    #now print out how many tests ran successfully
+    if (tests_passed == 8):
+        print("All tests passed - woohoo!!!")
+    else:
+        print("Uh oh, only " + string(tests_passed) + " tests passed out of the 8 total tests...")    
 pass
 
     #now, a standard test for finding all the roots

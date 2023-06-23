@@ -406,5 +406,10 @@ if __name__ == '__main__':
     tracked = chebsolver.TrackedInterval(interval)
 
     print(test_ChebMonomials())
+
+    #Go through the unit tests now
+    test_size_tracked()
+    test_copy()
+    test_contains()
     
 pass

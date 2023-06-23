@@ -42,7 +42,7 @@ jobs:
       run: |
         python tests/test_Combined_Solver.py
         
-  Chebyshev-Sub-Solver-Tests:
+  Cheb-Sub-Solver-Tests:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5

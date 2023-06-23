@@ -92,6 +92,8 @@ def runChebMonomialsTests(dims, maxDegs, maxTestsPerDim=np.inf, verboseLevel = 0
     if returnErrors:
         return allErrors
 
+#This func uses runSystem, isGoodSystem, getTestStyems, runChebMonomialsTests func so this func is the one
+#want actually run when run this file!
 def test_ChebMonomials():
     np.random.seed(192784)
     #Test a ton bunch of degree 1,2

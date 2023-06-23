@@ -422,8 +422,12 @@ if __name__ == '__main__':
         test_success_counter += 1
     if (test_contains()):
         test_success_counter += 1
+    if (test_linearCheck1()):
+        test_success_counter += 1
+    if (test_BoundingIntervalLinearSystem()):
+        test_success_counter += 1
 
-    if (test_success_counter == 3):
+    if (test_success_counter == 5):
         print("ALL TESTS PASSED!!! SLAYYYY")
     
 pass

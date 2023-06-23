@@ -15,7 +15,6 @@ n = 5
 interval = np.array([np.random.random(n)*-1,np.random.random(n)]).T
 tracked = chebsolver.TrackedInterval(interval)
 
-
 from mpmath import mp
 from itertools import permutations, product
 
@@ -399,3 +398,13 @@ def test_BoundingIntervalLinearSystem():
 #find vertices
 #wait for peter's PR to get merged in before doing this...
 #but yeah it basically justs does the halfspace stuff
+
+#Run the tests in this file!
+if __name__ == '__main__':
+    n = 5
+    interval = np.array([np.random.random(n)*-1,np.random.random(n)]).T
+    tracked = chebsolver.TrackedInterval(interval)
+
+    test_ChebMonomials()
+    
+pass

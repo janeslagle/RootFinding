@@ -116,7 +116,7 @@ def set_up_Ms_errs():
 def test_size_tracked():
     assert tracked.size() == np.product(interval[:,1] - interval[:,0])
     
-    return true
+    return True
 
 def test_copy():
     tracked_copy = tracked.copy()
@@ -127,7 +127,7 @@ def test_copy():
     assert tracked.empty == tracked_copy.empty
     assert tracked.ndim == tracked_copy.ndim
     
-    return true
+    return True
 
 def test_contains():
     point_bad = 5*np.random.random(n)
@@ -137,7 +137,7 @@ def test_contains():
     in_bool_good = np.all(point_good >= tracked.interval[:,0]) and np.all(point_good <= tracked.interval[:,1])
     assert in_bool_good == tracked.__contains__(point_good)
 
-    return true
+    return True
 
 #FAIL
 # def test_overlaps():

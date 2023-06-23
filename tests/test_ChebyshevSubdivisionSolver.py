@@ -115,6 +115,8 @@ def set_up_Ms_errs():
 
 def test_size_tracked():
     assert tracked.size() == np.product(interval[:,1] - interval[:,0])
+    
+    return true
 
 def test_copy():
     tracked_copy = tracked.copy()
@@ -124,6 +126,8 @@ def test_copy():
     assert np.allclose(tracked.topInterval, tracked_copy.topInterval) == True
     assert tracked.empty == tracked_copy.empty
     assert tracked.ndim == tracked_copy.ndim
+    
+    return true
 
 def test_contains():
     point_bad = 5*np.random.random(n)
@@ -132,6 +136,8 @@ def test_contains():
     point_good = np.zeros(n)
     in_bool_good = np.all(point_good >= tracked.interval[:,0]) and np.all(point_good <= tracked.interval[:,1])
     assert in_bool_good == tracked.__contains__(point_good)
+
+    return true
 
 #FAIL
 # def test_overlaps():
@@ -408,8 +414,16 @@ if __name__ == '__main__':
     print(test_ChebMonomials())
 
     #Go through the unit tests now
-    test_size_tracked()
-    test_copy()
-    test_contains()
+    test_success_counter = 0
+
+    if (test_size_tracked()):
+        test_success_counter += 1
+    if (test_copy()):
+        test_success_counter += 1
+    if (test_contains()):
+        test_success_counter += 1
+
+    if (test_success_counter == 3):
+        print("ALL TESTS PASSED!!! SLAYYYY")
     
 pass

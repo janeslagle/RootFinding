@@ -405,6 +405,6 @@ if __name__ == '__main__':
     interval = np.array([np.random.random(n)*-1,np.random.random(n)]).T
     tracked = chebsolver.TrackedInterval(interval)
 
-    test_ChebMonomials()
+    print(test_ChebMonomials())
     
 pass

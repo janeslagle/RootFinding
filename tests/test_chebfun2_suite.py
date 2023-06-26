@@ -753,7 +753,7 @@ if __name__ == "__main__":
     failed_norm_tests = tests[where_failed_norm]
     if (len(failed_norm_tests) != 0):
     	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
-    print(f'Checking if all yroots roots match the actual roots   : Passed {np.sum(root_passes)} of 20, {100*np.mean(root_passes)}%')
+    print(f'Does yroots find all of the correct roots?   : Passed {np.sum(root_passes)} of 20, {100*np.mean(root_passes)}%')
     where_failed_roots = np.where(~root_passes)[0]
     failed_roots_tests = tests[where_failed_roots]
     if (len(failed_roots_tests) != 0):

@@ -230,10 +230,10 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
         return False, False
 
     residuals_pass = residuals_pass_or_fail(funcs, yroots, tol)
-    if residuals_pass:
-        #print("\t Residual test: pass")
+    """if residuals_pass:
+        print("\t Residual test: pass")
     else:
-        #print("\t Residual test: fail")
+        print("\t Residual test: fail")"""
 
     if cheb_roots is not None:
         if residuals_pass_or_fail(funcs, cheb_roots, tol):

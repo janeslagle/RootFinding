@@ -487,7 +487,7 @@ def test_roots_2_5():
     actual_roots = np.load('Polished_results/polished_2.5.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.5.csv', delimiter=',')
 
-     if np.array_equiv(actual_roots, yroots):
+    if np.array_equiv(actual_roots, yroots):
         all_roots_match = true
     else:
         all_roots_match = false
@@ -506,7 +506,7 @@ def test_roots_3_2():
     actual_roots = np.load('Polished_results/polished_3.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_3.2.csv', delimiter=',')
 
-     if np.array_equiv(actual_roots, yroots):
+    if np.array_equiv(actual_roots, yroots):
         all_roots_match = true
     else:
         all_roots_match = false

@@ -624,13 +624,11 @@ if __name__ == "__main__":
                         test_roots_9_2])
     res_passes = np.zeros_like(tests,dtype=bool)
     norm_passes = np.zeros_like(tests,dtype=bool)
-    root_passes = np.zeros_like(tests,dtype=bool)
     for i,test in enumerate(tests):
-        t, passes, root_pass = test()
+        t, passes = test()
         res_pass,norm_pass = passes
         res_passes[i] = res_pass
         norm_passes[i] = norm_pass
-        root_passes[i] = root_pass
     print('Summary')
     print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]

@@ -247,11 +247,11 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             else:
                 print("\t Chebfun norm test: fail")
             print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
+            print("The norm of the difference in y values:", y_norm)"""
         except ValueError as e:
             print("A different number of roots were found.")
             print ("Yroots: " + str(len(yroots)))
-            print("Chebfun Roots: " + str(len(cheb_roots)))"""
+            print("Chebfun Roots: " + str(len(cheb_roots)))
     if polished_roots is not None:
         try:
             norm_pass, x_norm, y_norm = norm_pass_or_fail(yroots, polished_roots, tol)

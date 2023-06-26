@@ -74,4 +74,38 @@ jobs:
         pip install -e .
     - name: execute ChebyshevSubdivisionSolver tests
       run: |
-        python tests/test_ChebyshevSubdivisionSolver.py       
+        python tests/test_ChebyshevSubdivisionSolver.py  
+        
+  test_chebfun2_suite:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Lint with flake8
+      run: |
+        conda install flake8
+    - name: install dependencies
+      run: |
+        conda install pytest
+        conda install pip
+        conda install numpy
+        conda install numba 
+        conda install sympy
+        conda install scipy
+        conda install matplotlib
+        conda install pytest-cov
+        conda install pytest-runner
+        pip install -e .
+    - name: execute chebfun2_suite tests
+      run: |
+        python tests/test_chebfun2_suite.py      

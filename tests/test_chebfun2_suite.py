@@ -326,7 +326,7 @@ def test_roots_1_1():
     actual_roots = np.load('Polished_results/polished_1.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_1.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -345,7 +345,7 @@ def test_roots_1_3():
     actual_roots = np.load('Polished_results/polished_1.3.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_1.3.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -366,7 +366,7 @@ def test_roots_1_4():
     actual_roots = np.load('Polished_results/polished_1.4.npy')
     chebfun_roots = np.array([np.loadtxt('Chebfun_results/test_roots_1.4.csv', delimiter=',')])
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -387,7 +387,7 @@ def test_roots_1_5():
     actual_roots = np.load('Polished_results/polished_1.5.npy')
     chebfun_roots = np.array([np.loadtxt('Chebfun_results/test_roots_1.5.csv', delimiter=',')])
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -407,7 +407,7 @@ def test_roots_2_1():
     actual_roots = np.load('Polished_results/polished_2.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -427,7 +427,7 @@ def test_roots_2_2():
     actual_roots = np.load('Polished_results/polished_2.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.2.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -447,7 +447,7 @@ def test_roots_2_3():
     actual_roots = np.load('Polished_results/polished_2.3.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.3.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -467,7 +467,7 @@ def test_roots_2_4():
     actual_roots = np.load('Polished_results/polished_2.4.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.4.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -487,7 +487,7 @@ def test_roots_2_5():
     actual_roots = np.load('Polished_results/polished_2.5.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.5.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -506,7 +506,7 @@ def test_roots_3_2():
     actual_roots = np.load('Polished_results/polished_3.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_3.2.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -526,7 +526,7 @@ def test_roots_4_1():
     actual_roots = np.load('Polished_results/polished_4.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_4.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -545,7 +545,7 @@ def test_roots_5():
     actual_roots = np.load('Polished_results/polished_5.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_5.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -564,7 +564,7 @@ def test_roots_6_2():
     actual_roots = np.load('Polished_results/polished_6.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_6.2.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -584,7 +584,7 @@ def test_roots_6_3():
     actual_roots = np.load('Polished_results/polished_6.3.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_6.3.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -604,7 +604,7 @@ def test_roots_7_1():
     actual_roots = np.load('Polished_results/polished_7.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_7.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -625,7 +625,7 @@ def test_roots_7_3():
     actual_roots = np.load('Polished_results/polished_7.3.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_7.3.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -644,7 +644,7 @@ def test_roots_8_1():
     actual_roots = np.load('Polished_results/polished_8.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_8.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -663,7 +663,7 @@ def test_roots_8_2():
     actual_roots = np.load('Polished_results/polished_8.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_8.2.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -684,7 +684,7 @@ def test_roots_9_1():
     actual_roots = np.load('Polished_results/polished_9.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_9.1.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False
@@ -704,7 +704,7 @@ def test_roots_9_2():
     actual_roots = np.load('Polished_results/polished_9.2.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_9.2.csv', delimiter=',')
 
-    if (np.all_close(actual_roots, yroots)):
+    if (np.allclose(actual_roots, yroots)):
         all_roots_match = True
     else:
         all_roots_match = False

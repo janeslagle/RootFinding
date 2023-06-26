@@ -8,8 +8,6 @@ from yroots.Combined_Solver import solve
 from time import time
 from matplotlib import pyplot as plt
 from yroots.utils import sortRoots
-# TODO Description of where these tests come from, links to relevant papers,
-# acknowledgements, etc.
 
 def norm_pass_or_fail(yroots, roots, tol=2.220446049250313e-13):
     """ Determines whether the roots given pass or fail the test according
@@ -614,22 +612,6 @@ def test_roots_9_2():
 
     return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 9.2, cheb_roots=chebfun_roots)
 
-
-def plot_timings(tests,timings):
-    labels = [test.__name__[11:].replace('_','.') for test in tests]
-    plt.figure(figsize=(8,5))
-    plt.subplot(211)
-    plt.bar(labels,timings)
-    plt.xticks(rotation=45)
-    plt.ylim(0,40)
-    plt.subplot(212)
-    plt.bar(labels,timings)
-    plt.xticks(rotation=45)
-    plt.yscale('log')
-    plt.ylim((10**-3,10**2))
-    plt.tight_layout()
-    plt.show()
-
 if __name__ == "__main__":
     # Run all the tests!
     tests = np.array([test_roots_1_1,
@@ -662,13 +644,14 @@ if __name__ == "__main__":
         norm_passes[i] = norm_pass
         times[i] = t
     print('\n\nSummary')
-    print(f'Residual Test: Passed {np.sum(res_passes)} of 27, {100*np.mean(res_passes)}%')
+    print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
-    print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
-    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 27, {100*np.mean(norm_passes)}%')
+    if (len(railed_res_tests) != 0):
+    	print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
+    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 20, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]
     failed_norm_tests = tests[where_failed_norm]
-    print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
-    plot_timings(tests,times)
+    if (len(failed_norm_tests) != 0):
+    	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
 

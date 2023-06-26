@@ -635,6 +635,29 @@ if __name__ == "__main__":
                         test_roots_9_1,
                         test_roots_9_2])
     res_passes = np.zeros_like(tests,dtype=bool)
+    norm_passes = np.zeros_like(tests,dtype=bool)if __name__ == "__main__":
+    # Run all the tests!
+    tests = np.array([test_roots_1_1,
+                        test_roots_1_3,
+                        test_roots_1_4,
+                        test_roots_1_5,
+                        test_roots_2_1,
+                        test_roots_2_2,
+                        test_roots_2_3,
+                        test_roots_2_4,
+                        test_roots_2_5,
+                        test_roots_3_2,
+                        test_roots_4_1,
+                        test_roots_5,
+                        test_roots_6_2,
+                        test_roots_6_3,
+                        test_roots_7_1,
+                        test_roots_7_3,
+                        test_roots_8_1,
+                        test_roots_8_2,
+                        test_roots_9_1,
+                        test_roots_9_2])
+    res_passes = np.zeros_like(tests,dtype=bool)
     norm_passes = np.zeros_like(tests,dtype=bool)
     times = np.zeros_like(tests)
     for i,test in enumerate(tests):
@@ -648,6 +671,24 @@ if __name__ == "__main__":
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
     if (len(railed_res_tests) != 0):
+    	print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
+    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 20, {100*np.mean(norm_passes)}%')
+    where_failed_norm = np.where(~norm_passes)[0]
+    failed_norm_tests = tests[where_failed_norm]
+    if (len(failed_norm_tests) != 0):
+    	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
+    times = np.zeros_like(tests)
+    for i,test in enumerate(tests):
+        t, passes = test()
+        res_pass,norm_pass = passes
+        res_passes[i] = res_pass
+        norm_passes[i] = norm_pass
+        times[i] = t
+    print('\n\nSummary')
+    print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
+    where_failed_res = np.where(~res_passes)[0]
+    failed_res_tests = tests[where_failed_res]
+    if (len(failed_res_tests) != 0):
     	print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
     print(f'Norm Test    : Passed {np.sum(norm_passes)} of 20, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]

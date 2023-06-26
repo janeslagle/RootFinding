@@ -218,76 +218,76 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             If len(yroots) != len(roots) or if it fails the residual
             or norm tests.
     """
-    print ("=========================================================")
-    print("Test " + str(test_num))
+    #print ("=========================================================")
+    #print("Test " + str(test_num))
     #Make sure dimensions are right
     if polished_roots.ndim == 1:
         polished_roots = polished_roots[..., np.newaxis].T
     
     #Fail if the number of roots is wrong
     if len(yroots) != len(polished_roots):
-        print(f"\t Num Roots Wrong! Found {len(yroots)}, Has {len(polished_roots)}!")
+        #print(f"\t Num Roots Wrong! Found {len(yroots)}, Has {len(polished_roots)}!")
         return False, False
 
     residuals_pass = residuals_pass_or_fail(funcs, yroots, tol)
     if residuals_pass:
-        print("\t Residual test: pass")
+        #print("\t Residual test: pass")
     else:
-        print("\t Residual test: fail")
+        #print("\t Residual test: fail")
 
     if cheb_roots is not None:
         if residuals_pass_or_fail(funcs, cheb_roots, tol):
-            print("\t Chebfun passes residual test")
+            #print("\t Chebfun passes residual test")
         else:
-            print("\t Chebfun fails residual test")
+            #print("\t Chebfun fails residual test")
         try:
             norm_pass, x_norm, y_norm = norm_pass_or_fail(polished_roots, cheb_roots, tol)
             if norm_pass:
-                print("\t Chebfun norm test: pass")
+                #print("\t Chebfun norm test: pass")
             else:
-                print("\t Chebfun norm test: fail")
-            print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
+                #print("\t Chebfun norm test: fail")
+            #print("The norm of the difference in x values:", x_norm)
+            #print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
-            print("A different number of roots were found.")
-            print ("Yroots: " + str(len(yroots)))
-            print("Chebfun Roots: " + str(len(cheb_roots)))
+            #print("A different number of roots were found.")
+            #print ("Yroots: " + str(len(yroots)))
+            #print("Chebfun Roots: " + str(len(cheb_roots)))
     if polished_roots is not None:
         try:
             norm_pass, x_norm, y_norm = norm_pass_or_fail(yroots, polished_roots, tol)
             if norm_pass:
-                print("\t YRoots norm test: pass")
+                #print("\t YRoots norm test: pass")
             else:
-                print("\t YRoots norm test: fail")
-            print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
+                #print("\t YRoots norm test: fail")
+            #print("The norm of the difference in x values:", x_norm)
+            #print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
-                print("A different number of roots were found.")
-                print ("Yroots: " + str(len(yroots)))
-                print("Polished: " + str(len(polished_roots)))
-    print("YRoots max residuals:")
+                #print("A different number of roots were found.")
+                #print ("Yroots: " + str(len(yroots)))
+                #print("Polished: " + str(len(polished_roots)))
+    #print("YRoots max residuals:")
     YR_resid = list()
     for i, func in enumerate(funcs):
         YR_resid.append(residuals(func, yroots))
-        print("\tf" + str(i) + ": " + str(np.max(residuals(func, yroots))))
+        #print("\tf" + str(i) + ": " + str(np.max(residuals(func, yroots))))
 
     cheb_resid = None
     if cheb_roots is not None:
         cheb_resid = list()
-        print("Chebfun max residuals:")
+        #print("Chebfun max residuals:")
         for i, func in enumerate(funcs):
             cheb_resid.append(residuals(func, cheb_roots))
-            print("\tf" + str(i) + ": " + str(np.max(residuals(func, cheb_roots))))
+            #print("\tf" + str(i) + ": " + str(np.max(residuals(func, cheb_roots))))
     if polished_roots is not None:
-        print("Polished max residuals:")
+        #print("Polished max residuals:")
         Other_resid = list()
         for i, func in enumerate(funcs):
             Other_resid.append(residuals(func, polished_roots))
-            print("\tf" + str(i) + ": " + str(np.max(residuals(func, polished_roots))))
+            #print("\tf" + str(i) + ": " + str(np.max(residuals(func, polished_roots))))
 
         if len(yroots) > len(polished_roots):
-            print("YRoots found more roots.")
-            print("=========================================================")
+            #print("YRoots found more roots.")
+            #print("=========================================================")
             return residuals_pass,norm_pass
 
     # print("Comparison of Residuals (YRoots <= Other)")
@@ -297,19 +297,19 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             comparison_array = (YR_resid[i] <= Other_resid[i])
             # print(comparison_array)
             num_smaller += np.sum(comparison_array)
-        print("Number of YRoots residual values <= Polished residual values are: " + str(num_smaller))
+        #print("Number of YRoots residual values <= Polished residual values are: " + str(num_smaller))
 
     if cheb_resid is not None:
         if len(yroots) > len(cheb_roots):
-            print("=========================================================")
+            #print("=========================================================")
             return residuals_pass,norm_pass
 
         for i in range(len(YR_resid)):
             comparison_array2 = (YR_resid[i] <= cheb_resid[i])
             num_smaller += np.sum(comparison_array2)
-    print("Number of YRoots residual values <= to Chebfun residual values are: " + str(num_smaller))
+    #print("Number of YRoots residual values <= to Chebfun residual values are: " + str(num_smaller))
 
-    print("=========================================================")
+    #print("=========================================================")
     return residuals_pass,norm_pass
 
 #TODO: include test cases for for returnbounding boxes, exact, rescale
@@ -637,12 +637,12 @@ if __name__ == "__main__":
     res_passes = np.zeros_like(tests,dtype=bool)
     norm_passes = np.zeros_like(tests,dtype=bool)
     times = np.zeros_like(tests)
-    """for i,test in enumerate(tests):
+    for i,test in enumerate(tests):
         t, passes = test()
         res_pass,norm_pass = passes
         res_passes[i] = res_pass
         norm_passes[i] = norm_pass
-        times[i] = t"""
+        times[i] = t
     print('\n\nSummary')
     print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]

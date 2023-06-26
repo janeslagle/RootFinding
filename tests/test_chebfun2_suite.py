@@ -735,7 +735,7 @@ if __name__ == "__main__":
                         test_roots_9_2])
     res_passes = np.zeros_like(tests,dtype=bool)
     norm_passes = np.zeros_like(tests,dtype=bool)
-    root_passes = np.zeros_like(tests,dype=bool)
+    root_passes = np.zeros_like(tests,dtype=bool)
     for i,test in enumerate(tests):
         t, passes, root_pass = test()
         res_pass,norm_pass = passes
@@ -753,4 +753,9 @@ if __name__ == "__main__":
     failed_norm_tests = tests[where_failed_norm]
     if (len(failed_norm_tests) != 0):
     	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
+    print(f'Yroots == actual roots?    : Passed {np.sum(root_passes)} of 20, {100*np.mean(root_passes)}%')
+    where_failed_roots = np.where(~root_passes)[0]
+    failed_roots_tests = tests[where_failed_roots]
+    if (len(failed_roots_tests) != 0):
+    	 print(f'Failed Roots Test on \n{[t.__name__ for t in failed_roots_tests]}')
     

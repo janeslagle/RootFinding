@@ -328,6 +328,8 @@ def test_roots_1_1():
 
     if array_equiv(actual_roots, yroots):
         all_roots_match = true
+    else:
+        all_roots_match = false
     
     return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 1.1, cheb_roots=chebfun_roots), all_roots_match
 

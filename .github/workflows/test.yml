@@ -8,7 +8,7 @@ on:
   
 
 jobs:
-  Combined-Solver-Tests:
+  test_Combined_Solver:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5
@@ -42,7 +42,7 @@ jobs:
       run: |
         python tests/test_Combined_Solver.py
         
-  Cheb-Sub-Solver-Tests:
+  test_ChebyshevSubdivisionSolver:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 5

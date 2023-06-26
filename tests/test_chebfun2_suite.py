@@ -635,29 +635,6 @@ if __name__ == "__main__":
                         test_roots_9_1,
                         test_roots_9_2])
     res_passes = np.zeros_like(tests,dtype=bool)
-    norm_passes = np.zeros_like(tests,dtype=bool)if __name__ == "__main__":
-    # Run all the tests!
-    tests = np.array([test_roots_1_1,
-                        test_roots_1_3,
-                        test_roots_1_4,
-                        test_roots_1_5,
-                        test_roots_2_1,
-                        test_roots_2_2,
-                        test_roots_2_3,
-                        test_roots_2_4,
-                        test_roots_2_5,
-                        test_roots_3_2,
-                        test_roots_4_1,
-                        test_roots_5,
-                        test_roots_6_2,
-                        test_roots_6_3,
-                        test_roots_7_1,
-                        test_roots_7_3,
-                        test_roots_8_1,
-                        test_roots_8_2,
-                        test_roots_9_1,
-                        test_roots_9_2])
-    res_passes = np.zeros_like(tests,dtype=bool)
     norm_passes = np.zeros_like(tests,dtype=bool)
     times = np.zeros_like(tests)
     for i,test in enumerate(tests):

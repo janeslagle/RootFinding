@@ -7,7 +7,7 @@ import numpy as np
 from yroots.Combined_Solver import solve
 from time import time
 from matplotlib import pyplot as plt
-from utils import sortRoots
+from yroots.utils import sortRoots
 # TODO Description of where these tests come from, links to relevant papers,
 # acknowledgements, etc.
 

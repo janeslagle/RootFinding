@@ -8,6 +8,7 @@ from yroots.Combined_Solver import solve
 from time import time
 from matplotlib import pyplot as plt
 from yroots.utils import sortRoots
+import unittest
 
 def norm_pass_or_fail(yroots, roots, tol=2.220446049250313e-13):
     """ Determines whether the roots given pass or fail the test according
@@ -310,6 +311,14 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             num_smaller += np.sum(comparison_array2)
     #print("Number of YRoots residual values <= to Chebfun residual values are: " + str(num_smaller))
 
+    print("")
+    print("Actual roots:")
+    print(polished_roots)
+    print("")
+    print("Yroots roots:")
+    print(yroots)
+    print("")
+
     print("=========================================================")
     return residuals_pass,norm_pass
 
@@ -326,14 +335,6 @@ def test_roots_1_1():
     t = time() - start
     actual_roots = np.load('Polished_results/polished_1.1.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_1.1.csv', delimiter=',')
-
-    print("")
-    print("Actual Roots:")
-    print(actual_roots)
-    print("")
-    print("YRoots Roots:")
-    print(yroots)
-    print("")
 
     return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 1.1, cheb_roots=chebfun_roots)
 
@@ -639,6 +640,7 @@ if __name__ == "__main__":
         res_passes[i] = res_pass
         norm_passes[i] = norm_pass
     print('Summary')
+    assertTrue(np.sum(res_passes) == 20)
     print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]

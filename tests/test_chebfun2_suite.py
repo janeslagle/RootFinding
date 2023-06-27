@@ -631,13 +631,16 @@ if __name__ == "__main__":
         res_pass,norm_pass = passes
         res_passes[i] = res_pass
         norm_passes[i] = norm_pass
+        
     print('Summary')
-    self.AssertEqual(np.sum(res_passes), 20, "Not passing some of the residual tests so FAILED!")
+    assert np.sum(res_passes) == 20, "Should be 20!"
     print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
     if (len(failed_res_tests) != 0):
     	print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
+
+    assert np.sum(norm_passes) == 20, "Should be 20!"
     print(f'Norm Test    : Passed {np.sum(norm_passes)} of 20, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]
     failed_norm_tests = tests[where_failed_norm]

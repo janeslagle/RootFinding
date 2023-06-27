@@ -246,8 +246,8 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
                 print("\t Chebfun norm test: pass")
             else:
                 print("\t Chebfun norm test: fail")
-            print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
+                print("The norm of the difference in x values:", x_norm)
+                print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
             print("A different number of roots were found.")
             print ("Yroots: " + str(len(yroots)))
@@ -259,13 +259,13 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
                 print("\t YRoots norm test: pass")
             else:
                 print("\t YRoots norm test: fail")
-            print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
+                print("The norm of the difference in x values:", x_norm)
+                print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
                 print("A different number of roots were found.")
                 print ("Yroots: " + str(len(yroots)))
-                print("Polished: " + str(len(polished_roots)))
-    print("YRoots max residuals:")
+                print("Polished: " + str(len(polished_roots)))        
+    print(\n"YRoots max residuals:")
     YR_resid = list()
     for i, func in enumerate(funcs):
         YR_resid.append(residuals(func, yroots))
@@ -297,7 +297,7 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             comparison_array = (YR_resid[i] <= Other_resid[i])
             # print(comparison_array)
             num_smaller += np.sum(comparison_array)
-        print("Number of YRoots residual values <= Polished residual values are: " + str(num_smaller))
+        #print("Number of YRoots residual values <= Polished residual values are: " + str(num_smaller))
 
     if cheb_resid is not None:
         if len(yroots) > len(cheb_roots):
@@ -307,7 +307,7 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
         for i in range(len(YR_resid)):
             comparison_array2 = (YR_resid[i] <= cheb_resid[i])
             num_smaller += np.sum(comparison_array2)
-    print("Number of YRoots residual values <= to Chebfun residual values are: " + str(num_smaller))
+    #print("Number of YRoots residual values <= to Chebfun residual values are: " + str(num_smaller))
 
     print("=========================================================")
     return residuals_pass,norm_pass
@@ -640,5 +640,4 @@ if __name__ == "__main__":
     failed_norm_tests = tests[where_failed_norm]
     if (len(failed_norm_tests) != 0):
     	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
-
 

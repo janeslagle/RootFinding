@@ -290,12 +290,12 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             print("=========================================================")
             return residuals_pass,norm_pass
 
-    print("Comparison of Residuals (YRoots <= Other)")
+    # print("Comparison of Residuals (YRoots <= Other)")
     num_smaller = 0
     if polished_roots is not None:
         for i in range(len(YR_resid)):
             comparison_array = (YR_resid[i] <= Other_resid[i])
-            print(comparison_array)
+            # print(comparison_array)
             num_smaller += np.sum(comparison_array)
         print("Number of YRoots residual values <= Polished residual values are: " + str(num_smaller))
 

@@ -645,4 +645,5 @@ if __name__ == "__main__":
     failed_norm_tests = tests[where_failed_norm]
     if (len(failed_norm_tests) != 0):
     	 print(f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}')
+    assert len(failed_norm_tests) == 0, "FAILED"    
 

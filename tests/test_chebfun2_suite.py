@@ -684,10 +684,11 @@ if __name__ == "__main__":
     print(f'Residual Test: Passed {np.sum(res_passes)} of 22, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
-    assert len(failed_res_tests) == 0, f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}'
-
+    
     print(f'Norm Test    : Passed {np.sum(norm_passes)} of 22, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]
     failed_norm_tests = tests[where_failed_norm]
+
+    assert len(failed_res_tests) == 0, f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}'
     assert len(failed_norm_tests) == 0, f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}'    
 

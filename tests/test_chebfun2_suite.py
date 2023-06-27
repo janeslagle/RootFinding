@@ -330,6 +330,23 @@ def test_roots_1_1():
 
     return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 1.1, cheb_roots=chebfun_roots)
 
+def test_roots_1_2():
+    # Test 1.2
+    f = lambda x,y: (y**2-x**3)*((y-0.7)**2-(x-0.3)**3)*((y+0.2)**2-(x+0.8)**3)*((y+0.2)**2-(x-0.8)**3)
+    g = lambda x,y: ((y+.4)**3-(x-.4)**2)*((y+.3)**3-(x-.3)**2)*((y-.5)**3-(x+.6)**2)*((y+0.3)**3-(2*x-0.8)**3)
+    funcs = [f,g]
+    a,b = np.array([-1,-1]), np.array([1,1])
+    start = time()
+    yroots = solve(funcs,a,b)
+    t = time() - start
+
+    #For some reason the actual_roots is wrong, so we are using chebfun_roots as the actual roots
+    #TODO: Get the actual roots!
+    actual_roots = np.load('Polished_results/polished_1.2.npy')
+    chebfun_roots = np.loadtxt('Chebfun_results/test_roots_1.2.csv', delimiter=',')
+
+    return t, verbose_pass_or_fail([f,g], yroots, chebfun_roots, 1.2, cheb_roots=chebfun_roots, tol=2.220446049250313e-10)
+
 def test_roots_1_3():
     # Test 1.3
     f = lambda x,y: y**2-x**3
@@ -619,6 +636,7 @@ def test_roots_9_2():
 if __name__ == "__main__":
     # Run all the tests!
     tests = np.array([test_roots_1_1,
+                        test_roots_1_2,                      
                         test_roots_1_3,
                         test_roots_1_4,
                         test_roots_1_5,
@@ -648,12 +666,12 @@ if __name__ == "__main__":
         norm_passes[i] = norm_pass
         
     print('Summary')
-    print(f'Residual Test: Passed {np.sum(res_passes)} of 21, {100*np.mean(res_passes)}%')
+    print(f'Residual Test: Passed {np.sum(res_passes)} of 22, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
     assert len(failed_res_tests) == 0, f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}'
 
-    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 21, {100*np.mean(norm_passes)}%')
+    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 22, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]
     failed_norm_tests = tests[where_failed_norm]
     assert len(failed_norm_tests) == 0, f'Failed Norm Test on \n{[t.__name__ for t in failed_norm_tests]}'    

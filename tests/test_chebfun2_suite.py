@@ -265,7 +265,8 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
                 print("A different number of roots were found.")
                 print ("Yroots: " + str(len(yroots)))
                 print("Polished: " + str(len(polished_roots)))        
-    print(\n"YRoots max residuals:")
+    print("")
+    print("YRoots max residuals:")
     YR_resid = list()
     for i, func in enumerate(funcs):
         YR_resid.append(residuals(func, yroots))

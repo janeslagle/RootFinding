@@ -640,7 +640,7 @@ if __name__ == "__main__":
         res_passes[i] = res_pass
         norm_passes[i] = norm_pass
     print('Summary')
-    assertTrue(np.sum(res_passes) == 20, "Passed!")
+    assert (np.sum(res_passes) == 20)
     print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]

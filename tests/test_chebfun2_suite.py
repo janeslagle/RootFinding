@@ -446,6 +446,20 @@ def test_roots_2_5():
 
     return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 2.5, cheb_roots=chebfun_roots, tol=2.220446049250313e-12)
 
+def test_roots_3_1():
+    # Test 3.1
+    f = lambda x,y: ((x-.3)**2+2*(y+0.3)**2-1)
+    g = lambda x,y: ((x-.49)**2+(y+.5)**2-1)*((x+0.5)**2+(y+0.5)**2-1)*((x-1)**2+(y-0.5)**2-1)
+    funcs = [f,g]
+    a,b = np.array([-1,-1]), np.array([1,1])
+    start = time()
+    yroots = solve(funcs,a,b)
+    t = time() - start
+    actual_roots = np.load('Polished_results/polished_3.1.npy')
+    chebfun_roots = np.loadtxt('Chebfun_results/test_roots_3.1.csv', delimiter=',')
+
+    return t, verbose_pass_or_fail([f,g], yroots, actual_roots, 3.1, cheb_roots=chebfun_roots, tol=2.220446049250313e-11)
+
 def test_roots_3_2():
     # Test 3.2
     f = lambda x,y: ((x-0.1)**2+2*(y-0.1)**2-1)*((x+0.3)**2+2*(y-0.2)**2-1)*((x-0.3)**2+2*(y+0.15)**2-1)*((x-0.13)**2+2*(y+0.15)**2-1)
@@ -613,6 +627,7 @@ if __name__ == "__main__":
                         test_roots_2_3,
                         test_roots_2_4,
                         test_roots_2_5,
+                        test_roots_3_1,
                         test_roots_3_2,
                         test_roots_4_1,
                         test_roots_5,
@@ -633,14 +648,14 @@ if __name__ == "__main__":
         norm_passes[i] = norm_pass
         
     print('Summary')
-    print(f'Residual Test: Passed {np.sum(res_passes)} of 20, {100*np.mean(res_passes)}%')
+    print(f'Residual Test: Passed {np.sum(res_passes)} of 21, {100*np.mean(res_passes)}%')
     where_failed_res = np.where(~res_passes)[0]
     failed_res_tests = tests[where_failed_res]
     if (len(failed_res_tests) != 0):
     	print(f'Failed Residual Test on \n{[t.__name__ for t in failed_res_tests]}')
     assert len(failed_res_tests) == 0, "FAILED"    
 
-    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 20, {100*np.mean(norm_passes)}%')
+    print(f'Norm Test    : Passed {np.sum(norm_passes)} of 21, {100*np.mean(norm_passes)}%')
     where_failed_norm = np.where(~norm_passes)[0]
     failed_norm_tests = tests[where_failed_norm]
     if (len(failed_norm_tests) != 0):

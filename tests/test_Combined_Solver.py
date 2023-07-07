@@ -89,7 +89,7 @@ def test_bad_intervals():
     (a) a lower bound is greater than an upper bound
     (b) the bounding arrays are unequal in length
     """
-    #a,b = np.array([1,-1]),np.array([1,1])
+    a,b = np.array([1,-1]),np.array([1,1])
     #funcs = [f,g]
     #with pytest.raises(ValueError) as excinfo:
     #    solve([f,g],a,b,[f_deg,g_deg])

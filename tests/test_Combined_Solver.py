@@ -236,10 +236,10 @@ if __name__ == '__main__':
 
     a = np.array([1,-1])
     b = np.array([1,1])
-    a = [a[0]]
+    a = np.array([a[0]])
     if len(a) != len(b):
         print("YOURE NOT CRAZY")
-    print("")
+    solve([f,g],a,b,[f_deg,g_deg])
     
     #Test each function now by actually calling them!
     

@@ -252,11 +252,11 @@ if __name__ == '__main__':
     if (testreturnBoundingBoxes):
         tests_passed += 1
     if (testoutside_neg1_pos1()):
-        tests_passed += 1"""
-    if (test_default_nodeg()):
         tests_passed += 1
-    """if (test_deg_inf()):
+    if (test_default_nodeg()):
         tests_passed += 1"""
+    if (test_deg_inf()):
+        tests_passed += 1
     
     #Print out message saying if all tests were passed
     if (tests_passed == 8):

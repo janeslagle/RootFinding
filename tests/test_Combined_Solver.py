@@ -236,7 +236,7 @@ if __name__ == '__main__':
 
     a = np.array([-1,-1])
     b = np.array([1,1])
-    c = np.array([1])
+    c = np.array([1,1,1])
     if len(a) != len(c):
         print("YOURE NOT CRAZY")
     solve([f,g],a,c,[f_deg,g_deg])

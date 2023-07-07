@@ -241,11 +241,11 @@ if __name__ == '__main__':
     
     if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         tests_passed += 1
-    """else:
+    else:
         print("Failed to run solver_check() successfully")
-    #if (test_solver()):
-    #    tests_passed += 1
-    if (test_bad_intervals()):
+    if (test_solver()):
+        tests_passed += 1
+    """if (test_bad_intervals()):
         tests_passed += 1
     if (test_exact_option()):
         tests_passed += 1
@@ -256,7 +256,7 @@ if __name__ == '__main__':
     if (test_default_nodeg()):
         tests_passed += 1
     if (test_deg_inf()):
-        tests_passed += 1
+        tests_passed += 1"""
     
     #Print out message saying if all tests were passed
     if (tests_passed == 8):

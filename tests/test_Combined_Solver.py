@@ -248,11 +248,11 @@ if __name__ == '__main__':
     if (test_bad_intervals()):
         tests_passed += 1
     if (test_exact_option()):
-        tests_passed += 1"""
+        tests_passed += 1
     if (testreturnBoundingBoxes):
         tests_passed += 1"""
     if (testoutside_neg1_pos1()):
-        tests_passed += 1
+        tests_passed += 1"""
     if (test_default_nodeg()):
         tests_passed += 1
     if (test_deg_inf()):

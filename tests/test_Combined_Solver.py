@@ -85,25 +85,28 @@ def test_solver():
 
 def test_bad_intervals():
     """
-    tests to make sure bad intervals get rejected by solve:
-    (a) a lower bound is greater than an upper bound
+    Tests to ensure bad intervals are rejected by solve():
+    (a) a lower bound is greater than or equal to an upper bound
     (b) the bounding arrays are unequal in length
     """
-    a,b = np.array([1,-1]),np.array([1,1])
+    # lower bound greater than upper bound case
+    a,b = np.array([1,-1]), np.array([1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
+    # one bounding array has more dimensions than another case
     a = np.array([1,1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
-    
+
+    # one bounding array has less dimensions than another case
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
-    
+
     return True
 
 def test_exact_option():
@@ -248,12 +251,12 @@ if __name__ == '__main__':
     else:
         print("Failed to run solver_check() successfully")
     if (test_solver()):
-        tests_passed += 1"""
+        tests_passed += 1
     if (test_bad_intervals()):
+        tests_passed += 1"""
+    if (test_exact_option()):
         tests_passed += 1
-    """if (test_exact_option()):
-        tests_passed += 1
-    if (testreturnBoundingBoxes):
+    """if (testreturnBoundingBoxes):
         tests_passed += 1
     if (testoutside_neg1_pos1()):
         tests_passed += 1

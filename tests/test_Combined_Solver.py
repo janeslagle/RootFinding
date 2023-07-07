@@ -243,11 +243,11 @@ if __name__ == '__main__':
         tests_passed += 1
     else:
         print("Failed to run solver_check() successfully")
-    if (test_solver()):
+    """if (test_solver()):
+        tests_passed += 1"""
+    if (test_bad_intervals()):
         tests_passed += 1
-    """if (test_bad_intervals()):
-        tests_passed += 1
-    if (test_exact_option()):
+    """if (test_exact_option()):
         tests_passed += 1
     if (testreturnBoundingBoxes):
         tests_passed += 1

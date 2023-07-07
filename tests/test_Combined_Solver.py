@@ -90,9 +90,9 @@ def test_bad_intervals():
     (b) the bounding arrays are unequal in length
     """
     a,b = np.array([1,-1]),np.array([1,1])
-    #with pytest.raises(ValueError) as excinfo:
-    #    solve([f,g],a,b,[f_deg,g_deg])
-    #assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
+    with pytest.raises(ValueError) as excinfo:
+        solve([f,g],a,b,[f_deg,g_deg])
+    assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:

@@ -100,7 +100,7 @@ def test_bad_intervals():
     #    solve([f,g],a,b,[f_deg,g_deg])
     #assert excinfo.value.args[0] == "Dimension mismatch in intervals."
     
-    return true
+    return True
 
 def test_exact_option():
     """

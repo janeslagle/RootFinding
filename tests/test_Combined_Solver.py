@@ -233,13 +233,6 @@ if __name__ == '__main__':
     f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
     g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
     f_deg,g_deg = 20,20
-
-    a = np.array([-1,-1])
-    b = np.array([1,1])
-    c = np.array([1,1,1])
-    if len(a) != len(c):
-        print("YOURE NOT CRAZY")
-    solve([f,g],a,c,[f_deg,g_deg])
     
     #Test each function now by actually calling them!
     

@@ -98,7 +98,7 @@ def test_bad_intervals():
     a = np.array([1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
-    assert excinfo.value.args[0] == "Dimension mismatch in intervals."
+    assert str(excinfo.value) == "Dimension mismatch in intervals."
     
     return True
 

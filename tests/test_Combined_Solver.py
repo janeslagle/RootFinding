@@ -239,12 +239,12 @@ if __name__ == '__main__':
     
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
     
-    if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
+    """if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         tests_passed += 1
     else:
-        print("Failed to run solver_check() successfully")
-    """if (test_solver()):
-        tests_passed += 1"""
+        print("Failed to run solver_check() successfully")"""
+    if (test_solver()):
+        tests_passed += 1
     if (test_bad_intervals()):
         tests_passed += 1
     """if (test_exact_option()):

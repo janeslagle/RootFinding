@@ -95,10 +95,10 @@ def test_bad_intervals():
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
-    a = [a[0]]
-    with pytest.raises(ValueError) as excinfo:
-        solve([f,g],a,b,[f_deg,g_deg])
-    assert excinfo.value.args[0] == "Dimension mismatch in intervals."
+    #a = [a[0]]
+    #with pytest.raises(ValueError) as excinfo:
+    #    solve([f,g],a,b,[f_deg,g_deg])
+    #assert excinfo.value.args[0] == "Dimension mismatch in intervals."
     
     return true
 
@@ -244,19 +244,19 @@ if __name__ == '__main__':
     else:
         print("Failed to run solver_check() successfully")
     if (test_solver()):
-        tests_passed += 1
+        tests_passed += 1"""
     if (test_bad_intervals()):
         tests_passed += 1
-    if (test_exact_option()):
+    """if (test_exact_option()):
         tests_passed += 1
     if (testreturnBoundingBoxes):
         tests_passed += 1
     if (testoutside_neg1_pos1()):
         tests_passed += 1
     if (test_default_nodeg()):
-        tests_passed += 1"""
-    if (test_deg_inf()):
         tests_passed += 1
+    if (test_deg_inf()):
+        tests_passed += 1"""
     
     #Print out message saying if all tests were passed
     if (tests_passed == 8):

@@ -228,7 +228,7 @@ def test_deg_inf():
     assert (is_lambda == np.array([True,False,True])).all() #TODO:need a test case for python functions with lambda not in the function definition, so is_routine is not is_lambda
     assert (guess_degs == np.array([3,3,2])).all()
     
-    return true
+    return True
     
 if __name__ == '__main__':
     f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)

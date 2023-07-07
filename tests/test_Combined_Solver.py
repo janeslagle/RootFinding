@@ -94,6 +94,11 @@ def test_bad_intervals():
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
+    a = np.array([1,1,1])
+    with pytest.raises(ValueError) as excinfo:
+        solve([f,g], a, b, [f_deg, g_deg])
+    assert excinfo.value.args[0] == "Dimension mismatch in intervals."
+    
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])

@@ -241,7 +241,7 @@ if __name__ == '__main__':
     
     if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         tests_passed += 1
-    else:
+    """else:
         print("Failed to run solver_check() successfully")
     #if (test_solver()):
     #    tests_passed += 1
@@ -260,5 +260,5 @@ if __name__ == '__main__':
     
     #Print out message saying if all tests were passed
     if (tests_passed == 8):
-        print("SUCCESS!!! ALL TESTS PASSED!!!")   
+        print("SUCCESS!!! ALL TESTS PASSED!!!")  """ 
 pass

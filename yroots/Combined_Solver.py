@@ -103,3 +103,8 @@ def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_ch
         return yroots, boundingBoxes
     else:
         yroots = ChebyshevSubdivisionSolver.solveChebyshevSubdivision(funcs,errs,returnBoundingBoxes,exact,constant_check=constant_check,                                                                        low_dim_quadratic_check=low_dim_quadratic_check,                                                                    all_dim_quadratic_check=all_dim_quadratic_check)
+        
+        
+        if is_neg1_1 == False and len(yroots) > 0:
+            yroots = transform(yroots,a,b)
+        return yroots

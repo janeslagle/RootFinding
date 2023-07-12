@@ -83,25 +83,37 @@ def test_solver():
     #So that I can acurately print that out... it will appease me loads to have this printed even though no one will probably ever click on the job ran to even see it
     return true
 
-def test_bad_intervals():
+def test_invalid_intervals_fail():
     """
-    Tests to ensure bad intervals are rejected by solve():
+    Tests rejection of invalid intervals by solve() to ensure inputted intervals
+    a,b are valid for the problem.
+
+    Test Cases:
     (a) a lower bound is greater than or equal to an upper bound
-    (b) the bounding arrays are unequal in length
+    (b) the upper and lower bounding arrays are unequal in length, they have mismatched dims
+
+    Returns:
+    - True if all test cases pass successfully (if solve() successfully raises ValueError when
+    invalid intervals are inputted)
+
+    Raises:
+    - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval), a 
+    ValueError is raised with a specific error message indicating the reason for the failure.
     """
-    # lower bound greater than upper bound case
+    # test case (a) - lower bound greater than upper bound case
     a,b = np.array([1,-1]), np.array([1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
-    # one bounding array has more dimensions than another case
+    # test case (b) 
+    # subcase 1: one bounding array has more dimensions than another case
     a = np.array([1,1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # one bounding array has less dimensions than another case
+    # subcase 2: one bounding array has less dimensions than another case
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])

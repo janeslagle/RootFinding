@@ -90,15 +90,17 @@ def test_invalid_intervals_fail():
 
     Test Cases:
     (a) a lower bound is greater than or equal to an upper bound
-    (b) the upper and lower bounding arrays are unequal in length, they have mismatched dims
+    (b) upper and lower bounding arrays are unequal in length, they have a mismatch in
+    dimensions btw. their respective sizes or lengths
 
     Returns:
-    - True if all test cases pass successfully (if solve() successfully raises ValueError when
-    invalid intervals are inputted)
+    - True if all test cases pass successfully (if solve() successfully raises a ValueError
+    when invalid intervals are inputted)
 
     Raises:
-    - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval), a 
-    ValueError is raised with a specific error message indicating the reason for the failure.
+    - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval
+    in any of the test cases), a ValueError is raised with a specific error message indicating
+    the reason for the failure.
     """
     # test case (a) - lower bound greater than upper bound case
     a,b = np.array([1,-1]), np.array([1,1])

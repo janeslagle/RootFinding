@@ -98,8 +98,8 @@ def test_invalid_intervals_fail():
     when invalid intervals are inputted)
 
     Raises:
-    - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval
-    in any of the test cases), a ValueError is raised with a specific error message indicating
+    - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval), 
+    a ValueError is raised with a specific error message indicating
     the reason for the failure.
     """
     # test case (a) - lower bound greater than upper bound case

@@ -1,13 +1,8 @@
 import numpy as np
-import inspect
-import sympy as sy
 import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
-# import ChebyshevSubdivisionSolver
 import yroots.ChebyshevApproximator as ChebyshevApproximator
-# import M_maker
 from yroots.utils import transform
 from yroots.polynomial import MultiCheb, MultiPower
-
 
 def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_check = True, low_dim_quadratic_check = True,
           all_dim_quadratic_check = False):
@@ -50,7 +45,7 @@ def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_ch
     #TODO: optimize guess_deg DOING
     #TODO: handle for case that input degree is above max_deg (provide a warning)
     #TODO: decide whether to move degree_guesser --> utils.py
-    
+
     #Initialize a, b to negative ones and ones if no argument passed in
     if a == []:
         a = -np.ones(len(funcs))
@@ -61,9 +56,9 @@ def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_ch
         a = np.array(a)
     if type(b) == list:
         b = np.array(b)
-    if type(a) != np.array:
+    if type(a) != np.ndarray:
         a = np.full(len(funcs),a)
-    if type(b) != np.array:
+    if type(b) != np.ndarray:
         b = np.full(len(funcs),b)
     #Ensure inputs a and b are valid for the problem.
     if len(a) != len(b):
@@ -81,11 +76,9 @@ def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_ch
     if not np.allclose(arr_neg1,a,rtol=1e-08) or not np.allclose(arr_1,b,rtol=1e-08):
         is_neg1_1 = False
 
-   # Get an approximation for each function.
+    # Get an approximation for each function.
     for i in range(len(funcs)):
         funcs[i], errs[i] = ChebyshevApproximator.chebApproximate(funcs[i],a,b)
-
-
 
     #Solve the problem using ChebyshevSubdivisionSolver.py
     # If there are roots and the interval given is not [-1,1]^n,
@@ -103,8 +96,6 @@ def solve(funcs,a=[],b=[], returnBoundingBoxes = False, exact=False, constant_ch
         return yroots, boundingBoxes
     else:
         yroots = ChebyshevSubdivisionSolver.solveChebyshevSubdivision(funcs,errs,returnBoundingBoxes,exact,constant_check=constant_check,                                                                        low_dim_quadratic_check=low_dim_quadratic_check,                                                                    all_dim_quadratic_check=all_dim_quadratic_check)
-        
-        
         if is_neg1_1 == False and len(yroots) > 0:
             yroots = transform(yroots,a,b)
         return yroots

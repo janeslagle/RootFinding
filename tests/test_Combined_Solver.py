@@ -89,7 +89,7 @@ def test_invalid_intervals_fail():
     a,b are valid for the problem.
 
     Test Cases:
-    (a) a lower bound is greater than or equal to an upper bound
+    (a) at least one lower bound is greater than or equal to an upper bound
     (b) upper and lower bounding arrays are unequal in length, they have a mismatch in
     dimensions btw. their respective sizes or lengths
 

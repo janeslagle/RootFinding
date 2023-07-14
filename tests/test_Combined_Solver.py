@@ -85,9 +85,9 @@ def test_invalid_intervals_fail():
     a,b are valid for the problem.
 
     Test Cases: solve() raises a ValueError in these 2 cases
-    (a) at least one lower bound is greater than or equal to an upper bound
-    (b) upper and lower bounding arrays are unequal in length, they have a mismatch in
+    (a) upper and lower bounding arrays are unequal in length, they have a mismatch in
     dimensions btw. their respective sizes or lengths
+    (b) at least one lower bound is greater than or equal to an upper bound
 
     Returns:
     - True if all test cases pass successfully (if solve() successfully raises a ValueError
@@ -106,21 +106,24 @@ def test_invalid_intervals_fail():
 
     # test case (b) 
     # cover cases when a,b have diff num elements along same dim
-    # a,b both 1D but a has more elements
-    a = np.array([1,1,1])
+    # a,b both 1D but a has more elements than b
+    a = np.array([1,1,1])    # solve() checks case (a) before (b) in code so fine that a>=b here
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # a,b both 1D but a has less elements 
+    # a,b both 1D but a has less elements tjan b
     # this case also covers that intervals given as lists are correctly converted to np.arrays
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # now cover case when either a,b are not 1D
-    
+    # non 1D case
+    a = np.array([[1,1],[1,1]])
+    with pytest.raises(ValueError) as excinfo:
+        solve([f,g],a,b,[f_deg,g_deg])
+    assert excinfo.value.args[0] == "Dimension mismatch in intervals."
     
     return True
 

@@ -10,13 +10,9 @@ import pytest
 import unittest
 from yroots.polynomial import MultiCheb, MultiPower
 from yroots.utils import transform
-from yroots.Combined_Solver import solve, degree_guesser
+from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
-
-f = lambda x,y: (x-1)*(np.cos(x*y**2)+2)
-g = lambda x,y: np.sin(8*np.pi*y)*(np.cos(x*y)+2)
-f_deg,g_deg = 20,20
 
 def solver_check(funcs,a,b):
     """
@@ -88,7 +84,7 @@ def test_invalid_intervals_fail():
     Tests rejection of invalid intervals by solve() to ensure inputted intervals
     a,b are valid for the problem.
 
-    Test Cases:
+    Test Cases: solve() raises a ValueError in these 2 cases
     (a) at least one lower bound is greater than or equal to an upper bound
     (b) upper and lower bounding arrays are unequal in length, they have a mismatch in
     dimensions btw. their respective sizes or lengths
@@ -102,20 +98,24 @@ def test_invalid_intervals_fail():
     a ValueError is raised with a specific error message indicating
     the reason for the failure.
     """
-    # test case (a) - lower bound greater than upper bound case
+    # test case (a) - lower bound >= upper bound
     a,b = np.array([1,-1]), np.array([1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
 
     # test case (b) 
-    # subcase 1: one bounding array has more dimensions than another case
+    # cover cases when a,b have diff num elements along same dim
+    # a, b both 1D but a has more elements
     a = np.array([1,1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # subcase 2: one bounding array has less dimensions than another case
+    # a, b both 1D but a has less elements
+    # this case also covers when interval is inputted as list so tests that code
+    # correctly handles converting lists to arrays and when the type is not that of an np.array
+    # (code failed to handle this case correctly before so important that have it in here!)
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])

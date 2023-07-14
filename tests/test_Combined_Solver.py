@@ -101,7 +101,7 @@ def test_invalid_intervals_fail():
     # test case (a)
     # cover cases when a,b have diff num elements along same dim
     # a,b both 1D but a has more elements than b
-    a = np.array([1,1,1])    # solve() checks case (a) before (b) so okay that a>=b here
+    a = np.array([1,1,1]), b = np.array([1,1])  # solve() checks case (a) before (b) so not a prob that a>=b here
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."

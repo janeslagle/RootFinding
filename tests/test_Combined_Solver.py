@@ -106,14 +106,14 @@ def test_invalid_intervals_fail():
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # a,b both 1D but a has less elements tjan b
-    # this case also covers that intervals given as lists are correctly converted to np.arrays
+    # a,b both 1D but a has less elements than b
+    # this case also covers that intervals given as lists are correctly converted to np.arrays - yahoo!
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # non 1D case
+    # non 1D case to be more complicated for funsies
     a = np.array([[1,1],
                   [1,1]])
     b = np.array([[[1, 2], [3, 4]],

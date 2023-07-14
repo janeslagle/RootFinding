@@ -74,10 +74,7 @@ def test_solver():
     assert solver_check([k,g],a,b) == True #some multicheb and neg1_1
     assert solver_check([h,k],a,b) == True #all multicheb and neg1_1
     
-    #If made it here in the file then means did not run into any assert statements
-    #I, Jane, am obsessed with our GitHub actions printing out that all tests were passed at the end so I am weirdly making all of these unit tests return true 
-    #So that I can acurately print that out... it will appease me loads to have this printed even though no one will probably ever click on the job ran to even see it
-    return true
+    return True
 
 def test_invalid_intervals_fail():
     """
@@ -101,7 +98,7 @@ def test_invalid_intervals_fail():
     # test case (a)
     # cover cases when a,b have diff num elements along same dim
     # a,b both 1D but a has more elements than b
-    a = np.array([1,1,1]), b = np.array([1,1])  # solve() checks case (a) before (b) so not a prob that a>=b here
+    a,b = np.array([1,1,1]), np.array([1,1])  # solve() checks case (a) before (b) so not a prob that a>=b here
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."

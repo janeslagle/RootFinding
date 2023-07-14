@@ -98,16 +98,10 @@ def test_invalid_intervals_fail():
     a ValueError is raised with a specific error message indicating
     the reason for the failure.
     """
-    # test case (a) - lower bound >= upper bound
-    a,b = np.array([1,-1]), np.array([1,1])
-    with pytest.raises(ValueError) as excinfo:
-        solve([f,g],a,b,[f_deg,g_deg])
-    assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
-
-    # test case (b) 
+    # test case (a)
     # cover cases when a,b have diff num elements along same dim
     # a,b both 1D but a has more elements than b
-    a = np.array([1,1,1])    # solve() checks case (a) before (b) in code so fine that a>=b here
+    a = np.array([1,1,1])    # solve() checks case (a) before (b) so okay that a>=b here
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
@@ -120,10 +114,20 @@ def test_invalid_intervals_fail():
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
     # non 1D case
-    a = np.array([[1,1],[1,1]])
+    a = np.array([[1,1],
+                  [1,1]])
+    b = np.array([[[1, 2], [3, 4]],
+        [[5, 6], [7, 8]],
+        [[9, 10], [11, 12]]])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
+
+    # test case (b)
+    a,b = np.array([1,-1]), np.array([1,1])
+    with pytest.raises(ValueError) as excinfo:
+        solve([f,g],a,b,[f_deg,g_deg])
+    assert excinfo.value.args[0] == "At least one lower bound is >= an upper bound."
     
     return True
 

@@ -106,21 +106,22 @@ def test_invalid_intervals_fail():
 
     # test case (b) 
     # cover cases when a,b have diff num elements along same dim
-    # a, b both 1D but a has more elements
+    # a,b both 1D but a has more elements
     a = np.array([1,1,1])
     with pytest.raises(ValueError) as excinfo:
         solve([f,g], a, b, [f_deg, g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
-    # a, b both 1D but a has less elements
-    # this case also covers when interval is inputted as list so tests that code
-    # correctly handles converting lists to arrays and when the type is not that of an np.array
-    # (code failed to handle this case correctly before so important that have it in here!)
+    # a,b both 1D but a has less elements 
+    # this case also covers that intervals given as lists are correctly converted to np.arrays
     a = [a[0]]
     with pytest.raises(ValueError) as excinfo:
         solve([f,g],a,b,[f_deg,g_deg])
     assert excinfo.value.args[0] == "Dimension mismatch in intervals."
 
+    # now cover case when either a,b are not 1D
+    
+    
     return True
 
 def test_exact_option():

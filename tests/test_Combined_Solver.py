@@ -14,6 +14,10 @@ from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
 
+def compare_solve_pass(funcs, a, b):
+    f, g = funcs
+    solve_yroots = solve(funcs, a, b)
+    
 
 def solver_check(funcs,a,b):
     """
@@ -266,6 +270,7 @@ if __name__ == '__main__':
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
     
     if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
+        print("WORKED BOOYAH YO")
         tests_passed += 1
     """else:
         print("Failed to run solver_check() successfully")

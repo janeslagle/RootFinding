@@ -14,6 +14,7 @@ from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
 
+
 def solver_check(funcs,a,b):
     """
     parameters
@@ -92,8 +93,7 @@ def test_invalid_intervals_fail():
 
     Raises:
     - ValueError: If any of the test cases fail (if solve() fails to register an invalid interval), 
-    a ValueError is raised with a specific error message indicating
-    the reason for the failure.
+    a ValueError is raised with a specific error message indicating the reason for the failure.
     """
     # test case (a)
     # cover cases when a,b have diff num elements along same dim
@@ -265,15 +265,15 @@ if __name__ == '__main__':
     
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
     
-    """if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
+    if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         tests_passed += 1
-    else:
+    """else:
         print("Failed to run solver_check() successfully")
     if (test_solver()):
-        tests_passed += 1"""
+        tests_passed += 1
     if (test_invalid_intervals_fail()):
         tests_passed += 1
-    """if (test_exact_option()):
+    if (test_exact_option()):
         tests_passed += 1
     if (testreturnBoundingBoxes):
         tests_passed += 1

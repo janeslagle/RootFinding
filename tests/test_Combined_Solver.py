@@ -16,7 +16,25 @@ import sympy as sy
 
 def compare_solve_pass(funcs, a, b):
     f, g = funcs
+
+    # the roots that get from solve func
     solve_yroots = solve(funcs, a, b)
+
+    arr_neg1 = np.array([-1]*len(a))   # lower array
+    arr_1 = np.ones(len(a))            # upper array
+
+    # approximations get from M_maker file!!!
+    f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
+    g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
+    
+    #TODO: make sure plugging in multicheb objects for [f_approx.M,g_approx.M]
+    yroots_2 = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([f_approx.M,g_approx.M],np.array([f_approx.err,g_approx.err])))
+    if len(yroots_2) > 0: #because transform doesn't work on empty arrays
+        yroots_2 = transform(yroots_2,a,b)
+    else: #case where no roots are found
+        return len(yroots_1) == 0 
+
+    return np.allclose(yroots_1,yroots_2)
     
 
 def solver_check(funcs,a,b):

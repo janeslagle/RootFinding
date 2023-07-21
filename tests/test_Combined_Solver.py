@@ -53,12 +53,9 @@ def solve_comparions_pass(funcs, a, b):
     else: #case where no roots are found
         return len(solve_yroots) == 0 
 
-    """matches_m_maker = np.allclose(solve_yroots, mmaker_yroots)
+    matches_m_maker = np.allclose(solve_yroots, mmaker_yroots)
 
-    # make sure matches new approximator too!!!
-    new_f_approx = approximator.chebApproximate(f, arr_neg1, arr_1)
-    new_g_approx = approximator.chebApproximate(g, arr_neg1, arr_1)
-    new_approx_yroots = np.array(ChebyshevSubdivisionSolver."""
+    
     
     return matches_m_maker
 

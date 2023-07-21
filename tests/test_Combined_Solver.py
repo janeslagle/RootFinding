@@ -15,7 +15,7 @@ from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
 
-def solve_comparions_pass(funcs, a, b):
+def solve_comparisons_pass(funcs, a, b):
     """
     For comparing solve() to M_maker (what previously used to approximate before ChebyshevApproximator.py was built)
     Compares solve() to M_maker (previous approximatior) results + ChebyshevApproximator (current approximator) results!

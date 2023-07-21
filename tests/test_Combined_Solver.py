@@ -5,6 +5,7 @@ representative of higher dimensions
 """
 import numpy as np
 import yroots.M_maker as M_maker
+import yroots.ChebyshevApproximator as approximator
 import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
 import pytest
 import unittest
@@ -14,9 +15,10 @@ from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
 
-def compare_solve_pass(funcs, a, b):
+def solve_comparions_pass(funcs, a, b):
     """
     For comparing solve() to M_maker (what previously used to approximate before ChebyshevApproximator.py was built)
+    Compares solve() to M_maker (previous approximatior) results + ChebyshevApproximator (current approximator) results!
     
     Parameters
     ----------
@@ -45,13 +47,20 @@ def compare_solve_pass(funcs, a, b):
     g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
     
     #TODO: make sure plugging in multicheb objects for [f_approx.M,g_approx.M]
-    yroots_2 = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([f_approx.M,g_approx.M],np.array([f_approx.err,g_approx.err])))
-    if len(yroots_2) > 0: #because transform doesn't work on empty arrays
-        yroots_2 = transform(yroots_2,a,b)
+    mmaker_yroots = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([f_approx.M,g_approx.M],np.array([f_approx.err,g_approx.err])))
+    if len(mmaker_yroots) > 0: #because transform doesn't work on empty arrays
+        mmaker_yroots = transform(mmaker_yroots,a,b)
     else: #case where no roots are found
-        return len(yroots_1) == 0 
+        return len(solve_yroots) == 0 
 
-    return np.allclose(yroots_1,yroots_2)
+    """matches_m_maker = np.allclose(solve_yroots, mmaker_yroots)
+
+    # make sure matches new approximator too!!!
+    new_f_approx = approximator.chebApproximate(f, arr_neg1, arr_1)
+    new_g_approx = approximator.chebApproximate(g, arr_neg1, arr_1)
+    new_approx_yroots = np.array(ChebyshevSubdivisionSolver."""
+    
+    return matches_m_maker
 
 def test_solver():
     """
@@ -271,7 +280,7 @@ if __name__ == '__main__':
     
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
     
-    if (solver_check([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
+    if (solve_comparisons_pass([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
         print("WORKED BOOYAH YO")
         tests_passed += 1
     """else:

@@ -15,6 +15,23 @@ import inspect
 import sympy as sy
 
 def compare_solve_pass(funcs, a, b):
+    """
+    For comparing solve() to M_maker (what previously used to approximate before ChebyshevApproximator.py was built)
+    
+    Parameters
+    ----------
+    funcs: list 
+           collection of callable functions on [-1,1]^n (list w/ funcs for system of eq. want find common roots for!) 
+    a : ndarray
+        lower interval bounds for interval searching over roots for
+    b : ndarray
+        upper interval bounds for interval searching over roots for
+
+    Returns
+    -------
+    bool : whether or not solve() accomplishes the same result as plugging the output of M_maker to solveChebyshevSubdivision
+    """
+    
     f, g = funcs
 
     # the roots that get from solve func
@@ -24,39 +41,6 @@ def compare_solve_pass(funcs, a, b):
     arr_1 = np.ones(len(a))            # upper array
 
     # approximations get from M_maker file!!!
-    f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
-    g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
-    
-    #TODO: make sure plugging in multicheb objects for [f_approx.M,g_approx.M]
-    yroots_2 = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([f_approx.M,g_approx.M],np.array([f_approx.err,g_approx.err])))
-    if len(yroots_2) > 0: #because transform doesn't work on empty arrays
-        yroots_2 = transform(yroots_2,a,b)
-    else: #case where no roots are found
-        return len(yroots_1) == 0 
-
-    return np.allclose(yroots_1,yroots_2)
-    
-
-def solver_check(funcs,a,b):
-    """
-    parameters
-    ----------
-    funcs: list 
-    collection of callable functions on [-1,1]^n
-    a,b: ndarray
-    lower and upper bounds
-
-    returns
-    -------
-    bool: whether or not the solver accomplishes the same result as plugging the output of M_maker to solveChebyshevSubdivision
-    """
-
-    f,g = funcs
-    yroots_1 = solve(funcs,a,b)
-    
-    arr_neg1 = np.array([-1]*len(a))
-    arr_1 = np.ones(len(a))
-
     f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
     g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
     

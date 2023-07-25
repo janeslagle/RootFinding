@@ -67,7 +67,7 @@ def compare_solve_mmaker(funcs, a, b):
     # check if yroots and roots found from M_maker approx are close enough to equal w/ np.allclose
     solve_matches_M_maker = np.allclose(yroots, M_maker_roots)   # case (b) for what is returned in this function
 
-    return solve_mathes_M_maker
+    return solve_matches_M_maker
 
 def compare_solve_chebapprox(funcs, a, b):
     """

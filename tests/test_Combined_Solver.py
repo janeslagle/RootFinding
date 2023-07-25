@@ -72,7 +72,7 @@ def approx_comparisons(funcs, a, b):
     new_g_approx, new_g_err = chebApproximate(g, lower_itl, upper_itl)
 
     # plug new approx. into solveChebyshevSubdivision to get roots of those approx.
-    new_approx_roots = np.array(solveChebyshevSubdivision([new_f_approx,new_g_approx],np.array([new_f_error,new_g_error])))
+    new_approx_roots = np.array(solveChebyshevSubdivision([new_f_approx,new_g_approx],np.array([new_f_err,new_g_err])))
 
     # since found approx on [-1,1] transform onto [a,b] interval inputted now
     if len(new_approx_roots) > 0:

@@ -6,7 +6,7 @@ representative of higher dimensions
 import numpy as np
 import yroots.M_maker as M_maker
 from yroots.ChebyshevApproximator import chebApproximate
-import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
+from yroots.ChebyshevSubdivisionSolver import solveChebyshevSubdivision
 import pytest
 import unittest
 from yroots.polynomial import MultiCheb, MultiPower
@@ -15,10 +15,14 @@ from yroots.Combined_Solver import solve
 import inspect
 import sympy as sy
 
-def solve_comparisons_pass(funcs, a, b):
+def approx_comparisons(funcs, a, b):
     """
-    For comparing solve() to M_maker (what previously used to approximate before ChebyshevApproximator.py was built)
-    Compares solve() to M_maker (previous approximatior) results + ChebyshevApproximator (current approximator) results!
+    For comparing solve() to both the M_maker approximator (what previously used for approximations) and the
+    ChebyshevApproximate approximator (what are now using for approximations in the code). This function ensures
+    that the roots found by solve() accomplishes the same result as plugging both the approximator outputs into
+    solveChebyshevSubidivision.
+    This function also compares both approximator results to eachother to make sure they both achieve the same thing!
+    (So uses M_maker to test the new approximator)
     
     Parameters
     ----------
@@ -32,48 +36,58 @@ def solve_comparisons_pass(funcs, a, b):
     Returns
     -------
     bool : whether or not solve() accomplishes the same result as plugging the output of M_maker to solveChebyshevSubdivision
+    bool : whether or not solve() accomplishes the same results as plugging the output of ChebyshevApproximate to solveCS
+    bool : whether or not M_maker and ChebyshevApproximate accomplish the same result
     """
     
-    f, g = funcs
+    f, g = funcs  # contains the funcs for the system of eq. want find common roots for
 
-    # the roots that get from solve func
-    solve_yroots = solve(funcs, a, b)
+    # get roots found by solve()
+    yroots = solve(funcs, a, b)
 
-    arr_neg1 = np.array([-1]*len(a))   # lower array
-    arr_1 = np.ones(len(a))            # upper array
+    # want find approximations on interval [-1,1] so get those lower, upper arrays here
+    # also use these instead of a, b here in case a,b were not inputted in [-1,1] form
+    lower_itl = -np.ones(len(a))
+    upper_itl = np.ones(len(b))
 
-    # approximations get from M_maker file!!!
-    f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
-    g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
-    
-    #TODO: make sure plugging in multicheb objects for [f_approx.M,g_approx.M]
-    mmaker_yroots = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([f_approx.M,g_approx.M],np.array([f_approx.err,g_approx.err])))
-    if len(mmaker_yroots) > 0: #because transform doesn't work on empty arrays
-        mmaker_yroots = transform(mmaker_yroots,a,b)
-    else: #case where no roots are found
-        return len(solve_yroots) == 0 
+    # get approximations from M_maker file (previous approximator used in code)
+    M_f_approx = M_maker.M_maker(f, lower_itl, upper_itl, f_deg)
+    M_g_approx = M_maker.M_maker(g, lower_itl, upper_itl, g_deg)
 
-    matches_m_maker_enough = np.allclose(solve_yroots, mmaker_yroots)
+    # plug M_maker approx. into solveChebyshevSubdivision to get roots of those approximations
+    M_maker_roots = np.array(solveChebyshevSubdivision([M_f_approx.M, M_g_approx.M], np.array([M_f_approx.err, M_g_approx.err])))
 
-    #get the approximations from the new approximator ChebyshevApproximator:
-    new_f_approx, new_f_error = chebApproximate(f, arr_neg1, arr_1)
-    new_g_approx, new_g_error = chebApproximate(g, arr_neg1, arr_1)
+    # use transform from yroots.utils to transform pts. from interval [-1,1] that used for approx. to interval [a,b] that was inputted
+    if len(M_maker_roots) > 0:   # transform only works on non empty arrays
+        M_maker_roots = transform(M_maker_roots, a, b)
+    else:  # case where no roots are found
+        if len(yroots) == 0:
+            return "No roots found"
 
-    #now plug them into the ChebyshevSubdivisionSolver function!!!
-    new_approx_yroots = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([new_f_approx,new_g_approx],np.array([new_f_error,new_g_error])))
+    # check if yroots and roots found from M_maker approx are close enough to equal w/ np.allclose
+    solve_matches_M_maker = np.allclose(yroots, M_maker_roots)
 
-    #do that if else that had before in this func I guess
-    if len(new_approx_yroots) > 0: #because transform doesn't work on empty arrays
-        new_approx_yroots = transform(new_approx_yroots,a,b)
-    else: #case where no roots are found
-        return len(solve_yroots) == 0 
+    # get the approximations from ChebyshevApproximator (new approximator being used in code)
+    new_f_approx, new_f_err = chebApproximate(f, lower_itl, upper_itl)
+    new_g_approx, new_g_err = chebApproximate(g, lower_itl, upper_itl)
 
-    matches_new_approx_enough = np.allclose(solve_yroots, new_approx_yroots)
+    # plug new approx. into solveChebyshevSubdivision to get roots of those approx.
+    new_approx_roots = np.array(solveChebyshevSubdivision([new_f_approx,new_g_approx],np.array([new_f_error,new_g_error])))
 
-    #NOW: should compare the maker and new approx yroots to each other!!!
-    new_and_old_match_enough = np.allclose(mmaker_yroots, new_approx_yroots)
-    
-    return matches_m_maker_enough, matches_new_approx_enough, new_and_old_match_enough
+    # since found approx on [-1,1] transform onto [a,b] interval inputted now
+    if len(new_approx_roots) > 0:
+        new_approx_roots = transform(new_approx_roots, a, b)
+    else:
+        if len(yroots) == 0:
+            return "No roots found"
+
+    # check if roots found from new approx are close enough to yroots to be considered same
+    solve_matches_new_approx = np.allclose(solve_yroots, new_approx_roots)
+
+    # compare M_maker, new approx roots found to each other to see if they are close enough to be considered the same
+    new_matches_M = np.allclose(M_maker_roots, new_approx_roots)  # use M_maker to test new approx to make sure it's good enough!
+
+    return solve_matches_M_maker, solve_mathces_new_approx, new_matches_M
 
 def test_solver():
     """
@@ -294,7 +308,7 @@ if __name__ == '__main__':
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
 
     #This func returns a bool so know it was successful if returns true
-    maker_fine, new_approx_fine, both_match = solve_comparisons_pass([f,g],-np.ones(2), np.ones(2))
+    maker_fine, new_approx_fine, both_match = approx_comparisons([f,g],-np.ones(2), np.ones(2))
     if (maker_fine):
         print("M MAKER FINE")
     else:

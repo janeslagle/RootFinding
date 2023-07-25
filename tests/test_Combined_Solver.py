@@ -405,20 +405,24 @@ if __name__ == '__main__':
     
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
 
-    #This func returns a bool so know it was successful if returns true
-    maker_fine, new_approx_fine, both_match = approx_comparisons([f,g],-np.ones(2), np.ones(2))
-    if (maker_fine):
-        print("M MAKER FINE")
+    solve_matches_mmaker = compare_solve_mmaker([f,g],a,b)
+    solve_matches_cheb_approx = compare_solve_chebapprox([f,g],a,b)
+    mmaker_matches_chebapprox = compare_mmaker_chebapprox([f,g],a,b)
+
+    if (solve_matches_mmaker):
+        tests_passed += 1
     else:
-        print("M MAKER NOT FINE")
-    if (new_approx_fine):
-        print("NEW APPROX FINE")
+        print("Solve() function failed to get same result as M_maker approximator when finding roots")
+
+    if (solve_matches_cheb_approx):
+        tests_passed += 1
     else:
-        print("NEW APPROX NOT FINE")
-    if (both_match):
-        print("BOTH APPROXS MATCH EACHOTHER BOO FREAKIN YUH BABY")
+        print("Solve() function failed to get same result as chebApproximate() when finding roots")
+
+    if (mmaker_matches_chebapprox):
+        tests_passed += 1
     else:
-        print("APPROX DONT MATCH. OH NOOOOOO")
+        print("The new chebApproximate gives the same result as the previous M_maker approximator when finding roots")
     
     """else:
         print("Failed to run solver_check() successfully")
@@ -438,6 +442,6 @@ if __name__ == '__main__':
         tests_passed += 1"""
     
     #Print out message saying if all tests were passed
-    if (tests_passed == 8):
+    if (tests_passed == 10):
         print("SUCCESS!!! ALL TESTS PASSED!!!") 
 pass

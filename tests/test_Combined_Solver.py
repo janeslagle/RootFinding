@@ -82,7 +82,7 @@ def approx_comparisons(funcs, a, b):
             return "No roots found"
 
     # check if roots found from new approx are close enough to yroots to be considered same
-    solve_matches_new_approx = np.allclose(solve_yroots, new_approx_roots)
+    solve_matches_new_approx = np.allclose(yroots, new_approx_roots)
 
     # compare M_maker, new approx roots found to each other to see if they are close enough to be considered the same
     new_matches_M = np.allclose(M_maker_roots, new_approx_roots)  # use M_maker to test new approx to make sure it's good enough!

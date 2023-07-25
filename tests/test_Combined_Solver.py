@@ -164,8 +164,7 @@ def compare_mmaker_chebapprox(funcs, a, b):
     # plug M_maker approx. into solveChebyshevSubdivision to get roots of those approximations
     M_maker_roots = np.array(solveChebyshevSubdivision([M_f_approx.M, M_g_approx.M], np.array([M_f_approx.err, M_g_approx.err])))
 
-    # use transform from yroots.utils to transform pts. from interval [-1,1] that used for approx. 
-    to interval [a,b] that was inputted
+    # use transform from yroots.utils to transform pts. from [-1,1] that used for approx. to interval [a,b] that was inputted
     if len(M_maker_roots) > 0:    # transform only works on non empty arrays
         M_maker_roots = transform(M_maker_roots, a, b)
 

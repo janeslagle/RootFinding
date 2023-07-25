@@ -5,7 +5,7 @@ representative of higher dimensions
 """
 import numpy as np
 import yroots.M_maker as M_maker
-import yroots.ChebyshevApproximator as approximator
+from yroots.ChebyshevApproximator import chebApproximate
 import yroots.ChebyshevSubdivisionSolver as ChebyshevSubdivisionSolver
 import pytest
 import unittest
@@ -53,11 +53,27 @@ def solve_comparisons_pass(funcs, a, b):
     else: #case where no roots are found
         return len(solve_yroots) == 0 
 
-    matches_m_maker = np.allclose(solve_yroots, mmaker_yroots)
+    matches_m_maker_enough = np.allclose(solve_yroots, mmaker_yroots)
 
+    #get the approximations from the new approximator ChebyshevApproximator:
+    new_f_approx, new_f_error = chebApproximate(f, arr_neg1, arr_1)
+    new_g_approx, new_g_error = chebApproximate(g, arr_neg1, arr_1)
+
+    #now plug them into the ChebyshevSubdivisionSolver function!!!
+    new_approx_yroots = np.array(ChebyshevSubdivisionSolver.solveChebyshevSubdivision([new_f_approx,new_g_approx],np.array([new_f_error,new_g_error])))
+
+    #do that if else that had before in this func I guess
+    if len(new_approx_yroots) > 0: #because transform doesn't work on empty arrays
+        new_approx_yroots = transform(new_approx_yroots,a,b)
+    else: #case where no roots are found
+        return len(solve_yroots) == 0 
+
+    matches_new_approx_enough = np.allclose(solve_yroots, new_approx_yroots)
+
+    #NOW: should compare the maker and new approx yroots to each other!!!
+    new_and_old_match_enough = np.allclose(mmaker_yroots, new_approx_yroots)
     
-    
-    return matches_m_maker
+    return matches_m_maker_enough, matches_new_approx_enough, new_and_old_match_enough
 
 def test_solver():
     """
@@ -276,10 +292,22 @@ if __name__ == '__main__':
     #Test each function now by actually calling them!
     
     tests_passed = 0     #Will act as counter for printing out if all tests were passed at the end
+
+    #This func returns a bool so know it was successful if returns true
+    maker_fine, new_approx_fine, both_match = solve_comparisons_pass([f,g],-np.ones(2), np.ones(2))
+    if (maker_fine):
+        print("M MAKER FINE")
+    else:
+        print("M MAKER NOT FINE")
+    if (new_approx_fine):
+        print("NEW APPROX FINE")
+    else:
+        print("NEW APPROX NOT FINE")
+    if (both_match):
+        print("BOTH APPROXS MATCH EACHOTHER BOO FREAKIN YUH BABY")
+    else:
+        print("APPROX DONT MATCH. OH NOOOOOO")
     
-    if (solve_comparisons_pass([f,g],-np.ones(2),np.ones(2))):    #This func returns a bool so know it was successful if returns true
-        print("WORKED BOOYAH YO")
-        tests_passed += 1
     """else:
         print("Failed to run solver_check() successfully")
     if (test_solver()):

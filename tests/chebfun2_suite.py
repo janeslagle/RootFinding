@@ -156,8 +156,9 @@ def norm_pass_or_fail(yroots, roots, tol=2.220446049250313e-13):
     roots_sorted = sortRoots(roots)
     yroots_sorted = sortRoots(yroots)
     root_diff = roots_sorted - yroots_sorted
-    return np.linalg.norm(root_diff[:,0]) < tol and np.linalg.norm(root_diff[:,1]) < tol, np.linalg.norm(root_diff[:,0]), np.linalg.norm(root_diff[:,1])
-
+    norm0 = np.linalg.norm(root_diff[:,0])
+    norm1 = np.linalg.norm(root_diff[:,1])
+    return norm0 < tol and norm1 < tol, norm0, norm1
 
 def residuals(func, roots):
     """ Finds the residuals of the given function at the roots.

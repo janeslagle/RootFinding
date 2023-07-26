@@ -423,13 +423,13 @@ if __name__ == '__main__':
     else:
         print("The new chebApproximate gives the same result as the previous M_maker approximator when finding roots")
     
-    if (test_solver()):
+    """if (test_solver()):
         tests_passed += 1
-    """if (test_invalid_intervals_fail()):
-        tests_passed += 1
+    if (test_invalid_intervals_fail()):
+        tests_passed += 1"""
     if (test_exact_option()):
         tests_passed += 1
-    if (testreturnBoundingBoxes):
+    """if (testreturnBoundingBoxes):
         tests_passed += 1
     if (testoutside_neg1_pos1()):
         tests_passed += 1

@@ -196,22 +196,22 @@ def test_solver():
     """
     a = -1*np.random.random(2)
     b = np.random.random(2)
-    arr_neg1 = np.array([-1]*len(a))
-    arr_1 = np.ones(len(a))
-    
+    arr_neg1 = -np.ones(len(a))
+    arr_1 = np.ones(len(b))
+
     g_approx = M_maker.M_maker(g,arr_neg1,arr_1,g_deg)
     h = MultiCheb(g_approx.M)
     f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
     k = MultiCheb(f_approx.M)
 
-    assert solver_check([f,g],a,b) == True #none multicheb and not neg1_1
-    assert solver_check([f,h],a,b) == True #some multicheb and not neg1_1
-    assert solver_check([h,k],a,b) == True #all multicheb and not neg1_1
+    assert compare_solve_mmaker([f,g],a,b) == True #none multicheb and not neg1_1
+    assert compare_solve_mmaker([f,h],a,b) == True #some multicheb and not neg1_1
+    assert compare_solve_mmaker([h,k],a,b) == True #all multicheb and not neg1_1
     b = np.ones(2).astype(float)
     a = -1*b
-    assert solver_check([f,g],a,b) == True #none multicheb and neg1_1
-    assert solver_check([k,g],a,b) == True #some multicheb and neg1_1
-    assert solver_check([h,k],a,b) == True #all multicheb and neg1_1
+    assert compare_solve_mmaker([f,g],a,b) == True #none multicheb and neg1_1
+    assert compare_solve_mmaker([k,g],a,b) == True #some multicheb and neg1_1
+    assert compare_solve_mmaker([h,k],a,b) == True #all multicheb and neg1_1
     
     return True
 

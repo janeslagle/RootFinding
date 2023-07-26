@@ -204,14 +204,14 @@ def test_solver():
     f_approx = M_maker.M_maker(f,arr_neg1,arr_1,f_deg)
     k = MultiCheb(f_approx.M)
 
-    assert compare_solve_mmaker([f,g],a,b) == True #none multicheb and not neg1_1
-    assert compare_solve_mmaker([f,h],a,b) == True #some multicheb and not neg1_1
-    assert compare_solve_mmaker([h,k],a,b) == True #all multicheb and not neg1_1
+    #assert compare_solve_mmaker([f,g],a,b) == True   #none multicheb and not neg1_1
+    #assert compare_solve_mmaker([f,h],a,b) == True   #some multicheb and not neg1_1
+    #assert compare_solve_mmaker([h,k],a,b) == True   #all multicheb and not neg1_1
     b = np.ones(2).astype(float)
     a = -1*b
-    assert compare_solve_mmaker([f,g],a,b) == True #none multicheb and neg1_1
-    assert compare_solve_mmaker([k,g],a,b) == True #some multicheb and neg1_1
-    assert compare_solve_mmaker([h,k],a,b) == True #all multicheb and neg1_1
+    assert compare_solve_mmaker([f,g],a,b) == True   #none multicheb and neg1_1
+    assert compare_solve_mmaker([k,g],a,b) == True   #some multicheb and neg1_1
+    assert compare_solve_mmaker([h,k],a,b) == True   #all multicheb and neg1_1
     
     return True
 

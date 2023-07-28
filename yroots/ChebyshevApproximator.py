@@ -304,3 +304,4 @@ def chebApproximate(f, a, b, absApproxTol=1e-10, relApproxTol=1e-10):
     """
     degs, epsilons, rhos = getChebyshevDegree(f, a, b, absApproxTol, relApproxTol)
     return interval_approximate_nd(f, degs, a, b), getApproxError(degs, epsilons, rhos)
+    

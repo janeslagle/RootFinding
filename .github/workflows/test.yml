@@ -87,21 +87,20 @@ jobs:
     - name: Add pip to system path
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
+        echo $PIP/bin >> $GITHUB_PATH
     - name: Lint with flake8
       run: |
-        conda install flake8
+        pip install flake8
     - name: install dependencies
       run: |
-        conda install pytest
-        conda install pip
-        conda install numpy
-        conda install numba 
-        conda install sympy
-        conda install scipy
-        conda install matplotlib
-        conda install pytest-cov
-        conda install pytest-runner
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
         pip install -e .
     - name: execute chebfun2_suite tests
       run: |
@@ -118,24 +117,23 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.10'
-    - name: Add conda to system path
+    - name: Add pip to system path
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
-        echo $CONDA/bin >> $GITHUB_PATH
+        echo $PIP/bin >> $GITHUB_PATH
     - name: Lint with flake8
       run: |
-        conda install flake8
+        pip install flake8
     - name: install dependencies
       run: |
-        conda install pytest
-        conda install pip
-        conda install numpy
-        conda install numba 
-        conda install sympy
-        conda install scipy
-        conda install matplotlib
-        conda install pytest-cov
-        conda install pytest-runner
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
         pip install -e .
     - name: execute chebfun2_suite tests
       run: |

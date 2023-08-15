@@ -9,6 +9,7 @@ from yroots.ChebyshevApproximator import chebApproximate
 from yroots.ChebyshevSubdivisionSolver import solveChebyshevSubdivision
 import pytest
 import unittest
+from yroots import utils
 from yroots.polynomial import MultiCheb, MultiPower
 from yroots.utils import transform
 from yroots.Combined_Solver import solve
@@ -290,10 +291,10 @@ def test_exact_option():
     #assert len(yroots_exact) == len(actual_roots)
     assert len(yroots_exact) == len(chebfun_roots)
 
-    actual_roots = ChebyshevSubdivisionSolver.sortRoots(actual_roots)
-    yroots_non_exact = ChebyshevSubdivisionSolver.sortRoots(yroots_non_exact)
-    yroots_exact = ChebyshevSubdivisionSolver.sortRoots(yroots_exact) 
-    chebfun_roots = ChebyshevSubdivisionSolver.sortRoots(chebfun_roots) #sort the Roots
+    actual_roots = utils.sortRoots(actual_roots)
+    yroots_non_exact = utils.sortRoots(yroots_non_exact)
+    yroots_exact = utils.sortRoots(yroots_exact) 
+    chebfun_roots = utils.sortRoots(chebfun_roots) #sort the Roots
 
     assert np.allclose(yroots_exact,actual_roots)
     assert np.allclose(yroots_exact,chebfun_roots)
@@ -360,9 +361,9 @@ def test_default_nodeg():
     actual_roots = np.load('Polished_results/polished_2.3.npy')
     chebfun_roots = np.loadtxt('Chebfun_results/test_roots_2.3.csv', delimiter=',')
 
-    actual_roots = ChebyshevSubdivisionSolver.sortRoots(actual_roots)
-    chebfun_roots = ChebyshevSubdivisionSolver.sortRoots(chebfun_roots) #sort the Roots
-    yroots = ChebyshevSubdivisionSolver.sortRoots(yroots) 
+    actual_roots = utils.sortRoots(actual_roots)
+    chebfun_roots = utils.sortRoots(chebfun_roots) #sort the Roots
+    yroots = utils.sortRoots(yroots) 
 
     assert np.allclose(yroots,actual_roots)
     assert np.allclose(yroots,chebfun_roots)

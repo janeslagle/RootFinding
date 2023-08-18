@@ -132,3 +132,8 @@ def solve(funcs,a=-1,b=1, verbose = False, returnBoundingBoxes = False, exact=Fa
         yroots = ChebyshevSubdivisionSolver.solveChebyshevSubdivision(funcs,errs,verbose,returnBoundingBoxes,exact,
                 constant_check=constant_check, low_dim_quadratic_check=low_dim_quadratic_check,
                 all_dim_quadratic_check=all_dim_quadratic_check)
+        if is_neg1_1 == False and len(yroots) > 0:
+            yroots = ChebyshevApproximator.transform(yroots,a,b)
+        return yroots      
+     
+     

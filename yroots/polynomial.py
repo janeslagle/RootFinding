@@ -7,7 +7,7 @@ class Term(object):
         
     def __repr__(self):
         return str(self.val)
-​
+        
     def __lt__(self, other):
         if sum(self.val) < sum(other.val):
             return True

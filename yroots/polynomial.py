@@ -20,7 +20,7 @@ class Term(object):
                 if i > j:
                     return True
             return False
-​
+            
     def __eq__(self, other):
         return self.val == other.val
 ​

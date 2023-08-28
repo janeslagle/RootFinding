@@ -376,8 +376,8 @@ class MultiCheb(Polynomial):
             return c
 
 ###############################################################################​
-​
-#### MUTLI_POWER ##############################################################
+
+#### MULTI_POWER ##############################################################
 
 class MultiPower(Polynomial):
     """Coefficient tensor representation of a power basis polynomial.

@@ -474,9 +474,9 @@ class MultiPower(Polynomial):
             new_self, new_other = match_size(self.coeff,other.coeff)
         else:
             new_self, new_other = self.coeff, other.coeff
-​
-        return MultiPower(convolve(new_self, new_other))
 
+        return MultiPower(convolve(new_self, new_other))
+    
     def __call__(self, points):
         '''
         Evaluates the polynomial at the given point.

@@ -307,7 +307,7 @@ class MultiCheb(Polynomial):
     """
     def __init__(self, coeff, clean_zeros = True):
         super(MultiCheb, self).__init__(coeff, clean_zeros)
-​
+
     def __add__(self,other):
         '''Addition of two MultiCheb polynomials.
 ​
@@ -325,9 +325,9 @@ class MultiCheb(Polynomial):
             new_self, new_other = match_size(self.coeff,other.coeff)
         else:
             new_self, new_other = self.coeff, other.coeff
-​
+
         return MultiCheb(new_self + new_other)
-​
+ 
     def __sub__(self,other):
         '''
         Subtraction of two MultiCheb polynomials.
@@ -345,8 +345,8 @@ class MultiCheb(Polynomial):
             new_self, new_other = match_size(self.coeff,other.coeff)
         else:
             new_self, new_other = self.coeff, other.coeff
-        return MultiCheb((new_self - (new_other)), clean_zeros = False)
-    
+        return MultiCheb(new_self - (new_other)), clean_zeros = False)
+
     def __call__(self, points):
         '''
         Evaluates the polynomial at the given point.
@@ -373,10 +373,11 @@ class MultiCheb(Polynomial):
             return c[0]
         else:
             return c
+
+###############################################################################​
 ​
-###############################################################################
-​
-#### MULTI_POWER ##############################################################
+#### MUTLI_POWER ##############################################################
+
 class MultiPower(Polynomial):
     """Coefficient tensor representation of a power basis polynomial.
 ​
@@ -413,7 +414,7 @@ class MultiPower(Polynomial):
 ​
     """
     def __init__(self, coeff, clean_zeros = True):
-        super(MultiPower, self).__init__(coeff, clean_zeros)
+        super(MutliPower, self).__init__(coeff, clean_zeros)
 ​
     def __add__(self,other):
         '''Addition of two MultiPower polynomials.
@@ -433,7 +434,7 @@ class MultiPower(Polynomial):
         else:
             new_self, new_other = self.coeff, other.coeff
         return MultiPower((new_self + new_other), clean_zeros = False)
-​
+    
     def __sub__(self,other):
         '''
         Subtraction of two MultiPower polynomials.
@@ -474,7 +475,7 @@ class MultiPower(Polynomial):
             new_self, new_other = self.coeff, other.coeff
 ​
         return MultiPower(convolve(new_self, new_other))
-    
+
     def __call__(self, points):
         '''
         Evaluates the polynomial at the given point.

@@ -1,8 +1,7 @@
 import numpy as np
 from scipy.signal import convolve
-​
+
 class Term(object):
-    
     def __init__(self,val):
         self.val = tuple(val)
 ​

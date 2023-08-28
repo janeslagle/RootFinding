@@ -68,13 +68,13 @@ def match_size(a,b):
         Matrixes of equal size.
     '''
     new_shape = np.maximum(a.shape, b.shape)
-​
+
     a_new = np.zeros(new_shape)
     a_new[slice_top(a.shape)] = a
     b_new = np.zeros(new_shape)
     b_new[slice_top(b.shape)] = b
     return a_new, b_new
-​
+    
 ############ Fast polynomial evaluation functions ############
 ​
 def polyval(x, cc):

@@ -75,7 +75,7 @@ def solve(funcs,a=-1,b=1, verbose = False, returnBoundingBoxes = False, exact=Fa
     boundingBoxes : numpy array (optional)
         The exact intervals (boxes) in which each root is bound to lie.
     """
-​
+
     # Ensure input functions and upper/lower bounds are valid
     if type(funcs) != list and type(funcs) != np.ndarray:
         funcs = [funcs]

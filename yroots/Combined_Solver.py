@@ -104,7 +104,7 @@ def solve(funcs,a=-1,b=1, verbose = False, returnBoundingBoxes = False, exact=Fa
     arr_1 = np.ones(dim)
     if not np.allclose(arr_neg1,a,rtol=1e-08) or not np.allclose(arr_1,b,rtol=1e-08):
         is_neg1_1 = False
-​
+
     # Get an approximation for each function.
     if verbose:
         print("Approximation shapes:", end=" ")

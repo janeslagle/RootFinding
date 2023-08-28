@@ -492,7 +492,7 @@ class MultiPower(Polynomial):
             value of the polynomial at the given point
         '''
         points = super(MultiPower, self).__call__(points)
-​
+
         c = self.coeff
         n = c.ndim
         cc = c.reshape(c.shape + (1,)*points.ndim)

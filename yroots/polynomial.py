@@ -32,10 +32,10 @@ class Term(object):
         
     def __le__(self,other):
         return (self < other or self == other)
-​
+        
     def __hash__(self):
         return hash(self.val)
-​
+        
 def slice_top(matrix_shape):
     ''' Gets the n-d slices needed to slice a matrix into the top corner of another.
 ​

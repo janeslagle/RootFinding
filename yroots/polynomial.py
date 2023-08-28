@@ -174,7 +174,7 @@ class Polynomial(object):
 ​
     '''
     def __init__(self, coeff, clean_zeros = True):
-​
+        
         if isinstance(coeff,list):
                 coeff = np.array(coeff)
         if isinstance(coeff,np.ndarray):
@@ -190,7 +190,7 @@ class Polynomial(object):
         self.dim = self.coeff.ndim
         self.shape = self.coeff.shape
         self.update_lead_term()
-​
+
     def clean_coeff(self):
         """
         Get rid of any zeros on the outside of the coefficient matrix.
@@ -211,7 +211,7 @@ class Polynomial(object):
                 if np.sum(abs(self.coeff[tuple(slices)])) == 0:
                     self.coeff = np.delete(self.coeff,-1,axis=cur_axis)
                     change = True
-​
+
     def update_lead_term(self):
         non_zeros = list()
         for i in zip(*np.where(self.coeff != 0)):
@@ -224,7 +224,7 @@ class Polynomial(object):
             self.lead_term = None
             self.lead_coeff = 0
             self.degree = -1
-​
+
     def __call__(self, points):
         '''
         Evaluates the polynomial at the given point. This method is overridden
@@ -255,29 +255,29 @@ class Polynomial(object):
             raise ValueError('Dimension of points does not match dimension of polynomial!')
 ​
         return points
-​
-    def __eq__(self,other):
+
+    def __eq__(self, other):
         '''
         check if coeff matrix is the same.
         '''
         if self.shape != other.shape:
             return False
         return np.allclose(self.coeff, other.coeff)
-​
-    def __ne__(self,other):
+
+    def __ne__(self, other):
         '''
         check if coeff matrix is not the same.
         '''
         return not (self == other)
-​
+
     def __repr__(self):
-        return str(self.coeff)
-    
+        return str(sel.coeff)
+
     def __str__(self):
         return str(self.coeff)
-​
+
 ###############################################################################
-​
+
 #### MULTI_CHEB ###############################################################
 class MultiCheb(Polynomial):
     """Coefficient tensor representation of a Chebyshev basis polynomial.

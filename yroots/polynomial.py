@@ -4,7 +4,7 @@ from scipy.signal import convolve
 class Term(object):
     def __init__(self,val):
         self.val = tuple(val)
-​
+        
     def __repr__(self):
         return str(self.val)
 ​

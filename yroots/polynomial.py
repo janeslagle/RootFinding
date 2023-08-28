@@ -244,7 +244,7 @@ class Polynomial(object):
         points = np.array(points)
         if points.ndim == 0:
             points = np.array([points])
-​
+            
         if points.ndim == 1:
             if self.dim > 1:
                 points = points.reshape(1,points.shape[0])

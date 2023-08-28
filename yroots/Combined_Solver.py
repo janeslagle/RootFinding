@@ -113,8 +113,8 @@ def solve(funcs,a=-1,b=1, verbose = False, returnBoundingBoxes = False, exact=Fa
         if verbose:
             print(f"{i}: {funcs[i].shape}", end = " " if i != dim-1 else '\n')
     if verbose:
-        print(f"Searching on interval {[[a[i],b[i]] for i in range(dim)]}")
-​
+        print(f"Searching on interval {[[a[i], b[i]] for i in range(dim)]}")
+
     # Find and return the roots (and, optionally, the bounding boxes)
     if returnBoundingBoxes:
         yroots, boundingBoxes = ChebyshevSubdivisionSolver.solveChebyshevSubdivision(funcs,errs,verbose,returnBoundingBoxes,exact,

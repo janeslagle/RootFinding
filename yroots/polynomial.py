@@ -415,8 +415,8 @@ class MultiPower(Polynomial):
 ​
     """
     def __init__(self, coeff, clean_zeros = True):
-        super(MutliPower, self).__init__(coeff, clean_zeros)
-​
+        super(MultiPower, self).__init__(coeff, clean_zeros)
+    
     def __add__(self,other):
         '''Addition of two MultiPower polynomials.
 ​

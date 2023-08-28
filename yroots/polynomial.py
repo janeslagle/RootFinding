@@ -455,7 +455,7 @@ class MultiPower(Polynomial):
         else:
             new_self, new_other = self.coeff, other.coeff
         return MultiPower((new_self - (new_other)), clean_zeros = False)
-​
+    
     def __mul__(self,other):
         '''
         Multiplication of two MultiPower polynomials.

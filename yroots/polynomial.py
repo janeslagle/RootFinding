@@ -74,21 +74,21 @@ def match_size(a,b):
     b_new = np.zeros(new_shape)
     b_new[slice_top(b.shape)] = b
     return a_new, b_new
-    
+
 ############ Fast polynomial evaluation functions ############
-​
+
 def polyval(x, cc):
     c0 = cc[-1]
     for i in range(2, len(cc) + 1):
         c0 = cc[-i] + c0*x
     return c0
-​
+
 def polyval2(x, cc):
     c0 = cc[-1]
     for i in range(2, len(cc) + 1):
         c0 = cc[-i] + c0*x
     return c0
-​
+
 def chebval(x, cc):
     if len(cc) == 1:
         c0 = cc[0]
@@ -105,7 +105,7 @@ def chebval(x, cc):
             c0 = cc[-i] - c1
             c1 = tmp + c1*x2
     return c0 + c1*x
-​
+
 def chebval2(x, cc):
     if len(cc) == 1:
         c0 = cc[0]
@@ -122,9 +122,9 @@ def chebval2(x, cc):
             c0 = cc[-i] - c1
             c1 = tmp + c1*x2
     return c0 + c1*x
-​
+
 ################################################
-​
+
 class Polynomial(object):
     '''
     Superclass for MultiPower and MultiCheb. Contains methods and attributes

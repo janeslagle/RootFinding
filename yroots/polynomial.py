@@ -52,7 +52,7 @@ def slice_top(matrix_shape):
     for i in matrix_shape:
         slices.append(slice(0,i))
     return tuple(slices)
-​
+    
 def match_size(a,b):
     '''
     Matches the shape of two matrixes.

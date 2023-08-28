@@ -5,7 +5,6 @@ import yroots.ChebyshevApproximator as ChebyshevApproximator
 from yroots.polynomial import MultiCheb
 
 def solve(funcs,a=-1,b=1, verbose = False, returnBoundingBoxes = False, exact=False):
-​
     """Finds and returns the roots of a system of functions on the search interval [a,b].
 ​
     Generates an approximation for each function using Chebyshev polynomials on the interval given,

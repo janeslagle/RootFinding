@@ -346,7 +346,7 @@ class MultiCheb(Polynomial):
         else:
             new_self, new_other = self.coeff, other.coeff
 
-        return MultiCheb(new_self - (new_other)), clean_zeros = False))
+        return MultiCheb(new_self - (new_other), clean_zeros = False)
 
     def __call__(self, points):
         '''

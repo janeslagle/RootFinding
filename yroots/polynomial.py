@@ -249,11 +249,11 @@ class Polynomial(object):
             if self.dim > 1:
                 points = points.reshape(1,points.shape[0])
             else:
-                points = points.reshape(points.shape[0],1)
-​
+                points = points.reshape(points.shape[0], 1)
+                
         if points.shape[1] != self.dim:
             raise ValueError('Dimension of points does not match dimension of polynomial!')
-​
+
         return points
 
     def __eq__(self, other):
@@ -279,6 +279,7 @@ class Polynomial(object):
 ###############################################################################
 
 #### MULTI_CHEB ###############################################################
+
 class MultiCheb(Polynomial):
     """Coefficient tensor representation of a Chebyshev basis polynomial.
 ​

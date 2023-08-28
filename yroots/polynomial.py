@@ -363,7 +363,7 @@ class MultiCheb(Polynomial):
             values of the polynomial at the given points
         '''
         points = super(MultiCheb, self).__call__(points)
-​
+        
         c = self.coeff
         n = c.ndim
         cc = c.reshape(c.shape + (1,)*points.ndim)

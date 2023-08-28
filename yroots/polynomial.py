@@ -23,7 +23,7 @@ class Term(object):
             
     def __eq__(self, other):
         return self.val == other.val
-​
+
     def __gt__(self, other):
         return not(self < other or self == other)
 ​

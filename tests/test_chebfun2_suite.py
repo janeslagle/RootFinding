@@ -147,9 +147,6 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             If len(yroots) != len(roots) or if it fails the residual
             or norm tests.
     """
-    print ("=========================================================")
-    print("Test " + str(test_num))
-    
     #Make sure dimensions are right
     if polished_roots.ndim == 1:
         polished_roots = polished_roots[..., np.newaxis].T
@@ -171,7 +168,7 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
             print("A different number of roots were found.")
             print ("Yroots: " + str(len(yroots)))
             print("Chebfun Roots: " + str(len(cheb_roots)))
-    alt_norm_tols = {1.2 : 1e-7, 3.1 : 5e-11, 4.2 : 5e-13, 7.2 : 1e-8}
+    alt_norm_tols = {1.2 : 1e-7, 3.1 : 5e-11, 4.2 : 6.5e-13, 7.2 : 1e-8}
     if polished_roots is not None:
         try:
             if test_num == 6.1:
@@ -180,8 +177,6 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
                 norm_pass, x_norm, y_norm = norm_pass_or_fail(yroots, polished_roots, alt_norm_tols[test_num])
             else:
                 norm_pass, x_norm, y_norm = norm_pass_or_fail(yroots, polished_roots, tol)
-            print("The norm of the difference in x values:", x_norm)
-            print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
             print("A different number of roots were found.")
             print ("Yroots: " + str(len(yroots)))

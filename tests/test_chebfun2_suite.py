@@ -167,8 +167,6 @@ def verbose_pass_or_fail(funcs, yroots, polished_roots, test_num, cheb_roots=Non
     if cheb_roots is not None:
         try:
             norm_pass, x_norm, y_norm = norm_pass_or_fail(polished_roots, cheb_roots, tol)
-        print("The norm of the difference in x values:", x_norm)
-        print("The norm of the difference in y values:", y_norm)
         except ValueError as e:
             print("A different number of roots were found.")
             print ("Yroots: " + str(len(yroots)))

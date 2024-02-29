@@ -35,3 +35,8 @@ def test_ChebyshevApproximator():
         #Assert the degree is close
         assert(np.all(degDiffs >= -1))
         assert(np.all(degDiffs <= 5))
+
+if __name__ == '__main__':
+    test_ChebyshevApproximator()
+
+pass

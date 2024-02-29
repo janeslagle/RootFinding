@@ -397,3 +397,30 @@ def test_BoundingIntervalLinearSystem():
 #find vertices
 #wait for peter's PR to get merged in before doing this...
 #but yeah it basically justs does the halfspace stuff
+
+#Run the tests in this file!
+if __name__ == '__main__':
+    n = 5
+    interval = np.array([np.random.random(n)*-1,np.random.random(n)]).T
+    tracked = chebsolver.TrackedInterval(interval)
+
+    print(test_ChebMonomials())
+
+    #Go through the unit tests now
+    test_success_counter = 0
+
+    if (test_size_tracked()):
+        test_success_counter += 1
+    if (test_copy()):
+        test_success_counter += 1
+    if (test_contains()):
+        test_success_counter += 1
+    if (test_linearCheck1()):
+        test_success_counter += 1
+    if (test_BoundingIntervalLinearSystem()):
+        test_success_counter += 1
+
+    if (test_success_counter == 5):
+        print("ALL TESTS PASSED!!! SLAYYYY")
+    
+pass

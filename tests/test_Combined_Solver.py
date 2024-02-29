@@ -301,7 +301,7 @@ def test_exact_option():
     assert np.allclose(yroots_non_exact,actual_roots)
     assert np.allclose(yroots_non_exact,chebfun_roots)
     
-    return true
+    return True
 
 def testreturnBoundingBoxes():
     """

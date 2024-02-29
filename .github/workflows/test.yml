@@ -1,0 +1,141 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, test_workflow ]
+  pull_request:
+    branches: [ main ]
+  
+
+jobs:
+  test_Combined_Solver:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add pip to system path
+      run: |
+        echo $PIP/bin >> $GITHUB_PATH
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+    - name: install dependencies
+      run: |
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
+        pip install -e .
+    - name: execute Combined_Solver tests
+      run: |
+        python tests/test_Combined_Solver.py
+        
+  test_ChebyshevSubdivisionSolver:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add pip to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $PIP/bin >> $GITHUB_PATH
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+    - name: install dependencies
+      run: |
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
+        pip install -e .
+    - name: execute ChebyshevSubdivisionSolver tests
+      run: |
+        python tests/test_ChebyshevSubdivisionSolver.py  
+        
+  test_chebfun2_suite:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add pip to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $PIP/bin >> $GITHUB_PATH
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+    - name: install dependencies
+      run: |
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
+        pip install -e .
+    - name: execute chebfun2_suite tests
+      run: |
+        python tests/test_chebfun2_suite.py 
+        
+  test_ChebyshevApproximator:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add pip to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $PIP/bin >> $GITHUB_PATH
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+    - name: install dependencies
+      run: |
+        pip install pytest
+        pip install numpy
+        pip install numba 
+        pip install sympy
+        pip install scipy
+        pip install matplotlib
+        pip install pytest-cov
+        pip install pytest-runner
+        pip install -e .
+    - name: execute chebfun2_suite tests
+      run: |
+        python tests/test_ChebyshevApproximator.py      
+      
